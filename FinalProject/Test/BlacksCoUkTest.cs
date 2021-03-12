@@ -34,13 +34,7 @@ namespace FinalProject.Test
             blacksCoUkPage.CheckOrALLMeniuWork(text);
         }
 
-        [Test]
-        public static void BANDYMAS()
-        {
-            blacksCoUkPage.NavigateToDafaultPage();
-            //blacksCoUkPage.DismissConfirmationAlert(); //kazkas kitas ne alertas
-            blacksCoUkPage.CheckOrSocialButtonWork();
-        }
+       
 
     }
 }

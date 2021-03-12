@@ -22,9 +22,7 @@ namespace FinalProject.Page
         private IWebElement _searchResulMeniuText1 => Driver.FindElement(By.XPath("//div[@class='landing-page title']/h1"));       
         private IWebElement _searchResulMeniuText3 => Driver.FindElement(By.XPath("//a[@class='blog-home']"));        
         IReadOnlyCollection<IWebElement> allButton => Driver.FindElements(By.CssSelector(".nav-level-1"));
-        private IWebElement _twitterButton => Driver.FindElement(By.CssSelector("li:nth-child(1) .footer-social-icon"));
-        private IWebElement _lastElementOnPage => Driver.FindElement(By.CssSelector(".copyright"));
-
+        
 
 
 
@@ -99,18 +97,7 @@ namespace FinalProject.Page
 
         //}
 
-        public void CheckOrSocialButtonWork()
-        {
-            MouseScrollDownPage(_lastElementOnPage);            
-            _twitterButton.Click();
-            var naujas= Driver.SwitchTo().ActiveElement();
-            
-            Console.WriteLine(naujas.Equals("https://twitter.com/blacks_online")); 
-
-            //Assert.AreEqual(Driver.Url, twitter);
-
-        }
-
+        
 
     }
 }

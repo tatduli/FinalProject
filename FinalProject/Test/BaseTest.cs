@@ -14,21 +14,22 @@ namespace FinalProject.Test
 {
     public class BaseTest
     {        
-            public static IWebDriver driver;
-            public static BlacksCoUkPage blacksCoUkPage;
-            public static OneProductPage oneProductPage;
-            public static BasketP basket;
+        public static IWebDriver driver;
+        public static BlacksCoUkPage blacksCoUkPage;
+        public static OneProductPage oneProductPage;
+        public static WomenClothingPage womenClothingPage;
+        public static SocialNetworksPage socialNetworksPage;
 
         [OneTimeSetUp]
-            public static void SetUp()
-            {
-                driver = CustomDriver.GetIncognitoChrome();
-                blacksCoUkPage = new BlacksCoUkPage(driver);
-                oneProductPage = new OneProductPage(driver);
-                basket = new BasketP(driver);
-            }
-
-        
+        public static void SetUp()
+        {
+            driver = CustomDriver.GetIncognitoChrome();
+            blacksCoUkPage = new BlacksCoUkPage(driver);
+            oneProductPage = new OneProductPage(driver);
+            womenClothingPage = new WomenClothingPage(driver);
+            socialNetworksPage = new SocialNetworksPage(driver);
+        }
+               
         
         [TearDown]
         public static void TakeScreenshot()

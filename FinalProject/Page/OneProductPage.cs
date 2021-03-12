@@ -15,8 +15,8 @@ namespace FinalProject.Page
         IReadOnlyCollection<IWebElement> findedProductList => Driver.FindElements(By.CssSelector(".product-img-box"));
         private IWebElement _productNameOnNewPage => Driver.FindElement(By.CssSelector(".product-name"));
         private IWebElement _productSalePriceOnNewPage => Driver.FindElement(By.CssSelector(".special"));
-
-       
+        private IWebElement _productRegularPriceOnNewPage => Driver.FindElement(By.CssSelector(".regular-price"));
+        private IWebElement _addToBasketButton => Driver.FindElement(By.CssSelector("form.price-options-buy:nth-child(1)>div:nth-child(1)>div:nth-child(1)>div:nth-child(2)>fieldset:nth-child(1)>input:nth-child(3)"));
 
 
 
@@ -42,38 +42,45 @@ namespace FinalProject.Page
             List<IWebElement> productList = new List<IWebElement>(findedProductList);
             productList[randomElementIndex].Click();
         }
-
-        
+                
         public (string, string) ReturnSelectedProductDescriptionAndPriceAndClick()
         {
             int randomElementIndex = RandomProduct();
             string nameSelectedItem = Driver.FindElement(By.XPath("//article[" + (randomElementIndex + 1).ToString() + "]/div/a/span/h2/span[2]")).Text;
             string priceSelectedItem = Driver.FindElement(By.XPath("//article[" + (randomElementIndex + 1).ToString() + "]/div/a/span/span")).Text;
-            
+          
             ClickOnRandomProduct(randomElementIndex);            
             return (nameSelectedItem, priceSelectedItem);
-        }       
-    
-
-        public void TestSelectedProductDescriptionTheSameOpenedPage()
-        {            
-            (string, string) randomProduct = ReturnSelectedProductDescriptionAndPriceAndClick();            
-            var selectedProductName = randomProduct.Item1;            
-            Assert.AreEqual(selectedProductName, _productNameOnNewPage.Text, "product names do not match");
-            Assert.AreEqual(randomProduct.Item2, _productSalePriceOnNewPage.Text, "product price do not match");
         }
 
-        
+        public void TestSelectedProductDescriptionAndPriceOnOpenedPage()
+        {
+            (string, string) randomProduct = ReturnSelectedProductDescriptionAndPriceAndClick();
+            var selectedProductName = randomProduct.Item1;
+            Assert.AreEqual(selectedProductName, _productNameOnNewPage.Text, "product names do not match");
+            try
+            {
+                Assert.AreEqual(randomProduct.Item2, _productSalePriceOnNewPage.Text, "product price do not match");
+            }
+            catch (Exception exception)
+            {
+                if (exception is NullReferenceException || exception is NoSuchElementException)
+                {
+                    Assert.AreEqual(randomProduct.Item2, _productRegularPriceOnNewPage.Text, "product price do not match");
+                }
+
+            }
+        }
         public void CalculateBasketSum()
         {
             foreach (IWebElement item in basketList)
             {
                 string span = item.FindElement(By.TagName("span")).Text;
-                Console.WriteLine(span);
-                
+                Console.WriteLine(span);                
             }
         }
 
+        
      
         
     }

@@ -10,46 +10,42 @@ namespace FinalProject.Test
 {
     public class OneProductTest : BaseTest
     {
-        [Test, Order(1)]
-        public void CheckRandomCoolerProductDescriptionAndPriceInBasket()
+        [Repeat(5)]
+        [TestCase("Cooler", TestName = "Check Cooler product description and price in basket")]
+        [TestCase("Boots", TestName = "Check Boots product description and price in basket")]
+        [TestCase("Dress", TestName = "Check Dress product description and price in basket")]
+        public void CheckRandomCoolerProductDescriptionAndPriceInBasket(string productName)
         {            
             blacksCoUkPage.NavigateToDafaultPage();
-            blacksCoUkPage.ChlickAndWriteOnSearchField("Cooler");
-            blacksCoUkPage.ClickSearchButton();           
-            oneProductPage.TestSelectedProductDescriptionTheSameOpenedPage();
-        }
-
-        [Test, Order(2)]
-        public void CheckRandomBootsProductDescriptionAndPriceInBasket()
-        {
-            blacksCoUkPage.NavigateToDafaultPage();
-            blacksCoUkPage.ChlickAndWriteOnSearchField("Boots");
+            blacksCoUkPage.ChlickAndWriteOnSearchField(productName);
             blacksCoUkPage.ClickSearchButton();
-            oneProductPage.TestSelectedProductDescriptionTheSameOpenedPage();
-        }
-
-        [Test, Order(2)]
-        public void CheckRandomDressProductDescriptionAndPriceInBasket()
-        {
-            blacksCoUkPage.NavigateToDafaultPage();
-            blacksCoUkPage.ChlickAndWriteOnSearchField("Dress");
-            blacksCoUkPage.ClickSearchButton();
-            oneProductPage.TestSelectedProductDescriptionTheSameOpenedPage();
-        }
-
-        [Test, Order(2)]
-
-        public void TestRandomProductSalePriceInBasket()
-        {
+            oneProductPage.TestSelectedProductDescriptionAndPriceOnOpenedPage();
             
         }
 
-        [Test]
+       
+        //[TestCase("Dress")]
+        //public void Bandau(string produktas)
+        //{
+        //    blacksCoUkPage.NavigateToDafaultPage();
+        //    blacksCoUkPage.ChlickAndWriteOnSearchField(produktas);
+        //    blacksCoUkPage.ClickSearchButton();
+            
+        //}
+
+        //[Test, Order(2)]
+
+        //public void TestRandomProductSalePriceInBasket()
+        //{
+        //    oneProductPage.IDETIIKrepsiali();
+        //}
+
+        //[Test]
          
-        public void TotalSum()
-        {
-            oneProductPage.NavigateToDafaultPage();
-            oneProductPage.CalculateBasketSum();
-        }
+        //public void TotalSum()
+        //{
+        //    oneProductPage.NavigateToDafaultPage();
+        //    oneProductPage.CalculateBasketSum();
+        //}
     }
 }
