@@ -13,8 +13,8 @@ namespace FinalProject.Page
 {
     public class BlacksCoUkPage : BasePage
     {
-         private const string UrlAddress = "https://www.blacks.co.uk";
-        
+
+        private const string UrlAddress = "https://www.blacks.co.uk";
         //private const string BrandsUrlAddress = "https://www.blacks.co.uk/brands";
         private IWebElement _searchField => Driver.FindElement(By.Id("productsearch"));
         private IWebElement _searchButton => Driver.FindElement(By.CssSelector(".input-submit:nth-child(4)"));

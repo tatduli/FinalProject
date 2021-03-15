@@ -11,6 +11,7 @@ namespace FinalProject.Page
     public class OneProductPage : BasePage
     {
         private const string UrlAddress = "https://www.blacks.co.uk/basket/";
+       
         IReadOnlyCollection<IWebElement> basketList => Driver.FindElements(By.CssSelector(".basket-item-price"));
         IReadOnlyCollection<IWebElement> findedProductList => Driver.FindElements(By.CssSelector(".product-img-box"));
         private IWebElement _productNameOnNewPage => Driver.FindElement(By.CssSelector(".product-name"));
@@ -71,14 +72,16 @@ namespace FinalProject.Page
 
             }
         }
-        public void CalculateBasketSum()
-        {
-            foreach (IWebElement item in basketList)
-            {
-                string span = item.FindElement(By.TagName("span")).Text;
-                Console.WriteLine(span);                
-            }
-        }
+
+       
+        //public void CalculateBasketSum()
+        //{
+        //    foreach (IWebElement item in basketList)
+        //    {
+        //        string span = item.FindElement(By.TagName("span")).Text;
+        //        Console.WriteLine(span);                
+        //    }
+        //}
 
         
      

@@ -12,7 +12,7 @@ namespace FinalProject.Page
     public class BasePage
     {
         protected static IWebDriver Driver;
-        
+
 
         public BasePage(IWebDriver webDriver)
         {
@@ -24,10 +24,10 @@ namespace FinalProject.Page
             WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(seconds));
             return wait;
         }
-        
+
         public BasePage DismissConfirmationAlert()
         {
-            IAlert alert = Driver.SwitchTo().Alert();         
+            IAlert alert = Driver.SwitchTo().Alert();
             alert.Dismiss();
             return this;
         }
@@ -39,7 +39,7 @@ namespace FinalProject.Page
             actions.Perform();
             return this;
         }
-        
+
         public void CloseBrowser()
         {
             Driver.Quit();

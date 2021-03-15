@@ -13,12 +13,14 @@ using System.Threading.Tasks;
 namespace FinalProject.Test
 {
     public class BaseTest
-    {        
+    {
         public static IWebDriver driver;
         public static BlacksCoUkPage blacksCoUkPage;
         public static OneProductPage oneProductPage;
         public static WomenClothingPage womenClothingPage;
         public static SocialNetworksPage socialNetworksPage;
+        public static WomenClothingPage naujas;
+        //public static BasketPage basketPage;
 
         [OneTimeSetUp]
         public static void SetUp()
@@ -28,9 +30,12 @@ namespace FinalProject.Test
             oneProductPage = new OneProductPage(driver);
             womenClothingPage = new WomenClothingPage(driver);
             socialNetworksPage = new SocialNetworksPage(driver);
+            naujas = new WomenClothingPage(driver);
+
+            // basketPage = new BasketPage(driver);
         }
-               
-        
+
+
         [TearDown]
         public static void TakeScreenshot()
         {
@@ -39,9 +44,9 @@ namespace FinalProject.Test
         }
 
         [OneTimeTearDown]
-            public static void TearDown()
-            {
-                //driver.Quit();
-            }
+        public static void TearDown()
+        {
+            //driver.Quit();
         }
+    }
 }
