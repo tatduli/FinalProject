@@ -17,7 +17,7 @@ namespace FinalProject.Test
        
         [TestCase(SocialNetworks.YouTube, "YouTube", TestName = "Check or YouTube opened")]
         [TestCase(SocialNetworks.Facebook, "Facebook", TestName = "Check or Facebook opened")]
-        public static void BANDYMAS(Enum socialNetwork, string socialNetworkName )
+        public static void TestOrAllPageOpenedCorrectly(Enum socialNetwork, string socialNetworkName )
         {
             blacksCoUkPage.NavigateToDafaultPage();
             //blacksCoUkPage.DismissConfirmationAlert(); //kazkas kitas ne alertas

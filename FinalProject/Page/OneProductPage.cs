@@ -19,8 +19,6 @@ namespace FinalProject.Page
         private IWebElement _productRegularPriceOnNewPage => Driver.FindElement(By.CssSelector(".regular-price"));
         private IWebElement _addToBasketButton => Driver.FindElement(By.CssSelector("form.price-options-buy:nth-child(1)>div:nth-child(1)>div:nth-child(1)>div:nth-child(2)>fieldset:nth-child(1)>input:nth-child(3)"));
 
-
-
         public OneProductPage(IWebDriver webDriver) : base(webDriver) 
         {           
         }
@@ -54,6 +52,9 @@ namespace FinalProject.Page
             return (nameSelectedItem, priceSelectedItem);
         }
 
+        /// <summary>
+        /// TryCatch, nes yra sale kaina ir regular kaina
+        /// </summary>
         public void TestSelectedProductDescriptionAndPriceOnOpenedPage()
         {
             (string, string) randomProduct = ReturnSelectedProductDescriptionAndPriceAndClick();
@@ -69,22 +70,8 @@ namespace FinalProject.Page
                 {
                     Assert.AreEqual(randomProduct.Item2, _productRegularPriceOnNewPage.Text, "product price do not match");
                 }
-
             }
-        }
-
-       
-        //public void CalculateBasketSum()
-        //{
-        //    foreach (IWebElement item in basketList)
-        //    {
-        //        string span = item.FindElement(By.TagName("span")).Text;
-        //        Console.WriteLine(span);                
-        //    }
-        //}
-
-        
-     
+        }            
         
     }
 }

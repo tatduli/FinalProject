@@ -13,14 +13,10 @@ namespace FinalProject.Page
         private IWebElement _youtobeButton => Driver.FindElement(By.XPath("//img[@alt = 'Blacks YouTube']"));
         private IWebElement _twitterButton => Driver.FindElement(By.CssSelector("li:nth-child(1) .footer-social-icon"));       
         private IWebElement _instagramButton => Driver.FindElement(By.XPath("//img[@alt = 'Blacks Instagram']"));
-        private IWebElement _facebookButton => Driver.FindElement(By.XPath("//img[@alt = 'Blacks Facebook']"));
-        
+        private IWebElement _facebookButton => Driver.FindElement(By.XPath("//img[@alt = 'Blacks Facebook']"));        
         private IWebElement _lastElementOnPage => Driver.FindElement(By.CssSelector(".copyright"));
-
     
-        public SocialNetworksPage(IWebDriver webDriver) : base(webDriver) { }
-
-        
+        public SocialNetworksPage(IWebDriver webDriver) : base(webDriver) { }       
 
         public void ClickOnSocialButton(string socialNetworkName)
         {
@@ -43,8 +39,7 @@ namespace FinalProject.Page
                 default:
                     Console.WriteLine("The social network is unknow");
                     break;
-            }
-                
+            }                
         }
        
         public string OpenSocialNetworksPageAndReturnTitle()
@@ -55,8 +50,7 @@ namespace FinalProject.Page
             string browserTitle = Driver.SwitchTo().Window(browserTabs[1]).Title;
             Console.WriteLine(browserTitle);
             return browserTitle;
-        }
-       
+        }       
 
         public void CloseSocialNetworks()
         {
@@ -66,12 +60,8 @@ namespace FinalProject.Page
         }
 
         public void TestOrSocialNetworksPageOpened(string browserTitle, Enum siocialNetworksTitle)
-        {
-            //Assert.AreEqual(browserTitle, siocialNetworksTitle.ToString());  //tik su Twitter         
+        {                   
             Assert.IsTrue(browserTitle.Contains(siocialNetworksTitle.ToString()));
         }
-
-
-
     }
 }

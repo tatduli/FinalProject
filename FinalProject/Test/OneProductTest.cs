@@ -25,33 +25,7 @@ namespace FinalProject.Test
             blacksCoUkPage.NavigateToDafaultPage();
             blacksCoUkPage.ChlickAndWriteOnSearchField(productName);
             blacksCoUkPage.ClickSearchButton();
-            oneProductPage.TestSelectedProductDescriptionAndPriceOnOpenedPage();
-            
-        }
-
-       
-        //[TestCase("Dress")]
-        //public void Bandau(string produktas)
-        //{
-        //    blacksCoUkPage.NavigateToDafaultPage();
-        //    blacksCoUkPage.ChlickAndWriteOnSearchField(produktas);
-        //    blacksCoUkPage.ClickSearchButton();
-            
-        //}
-
-        //[Test, Order(2)]
-
-        //public void TestRandomProductSalePriceInBasket()
-        //{
-        //    oneProductPage.IDETIIKrepsiali();
-        //}
-
-        //[Test]
-         
-        //public void TotalSum()
-        //{
-        //    oneProductPage.NavigateToDafaultPage();
-        //    oneProductPage.CalculateBasketSum();
-        //}
+            oneProductPage.TestSelectedProductDescriptionAndPriceOnOpenedPage();            
+        }       
     }
 }

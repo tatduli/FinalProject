@@ -59,19 +59,21 @@
     <Compile Include="Driver\CustomDriver.cs" />
     <Compile Include="Enumeration\MeniuEnumeration.cs" />
     <Compile Include="Enumeration\SocialNetworks.cs" />
+    <Compile Include="Enumeration\SortByEnum.cs" />
+    <Compile Include="List\SortByList.cs" />
     <Compile Include="Page\BasePage.cs" />
     <Compile Include="Page\OneProductPage.cs" />
     <Compile Include="Page\BlacksCoUkPage.cs" />
     <Compile Include="Page\BrandsPage.cs" />
     <Compile Include="Page\SocialNetworksPage.cs" />
-    <Compile Include="Page\WomenClothingPage.cs" />
+    <Compile Include="Page\WomenClothingAndBasketPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\BaseTest.cs" />
     <Compile Include="Test\OneProductTest.cs" />
     <Compile Include="Test\BlacksCoUkTest.cs" />
     <Compile Include="Test\BrandsTest.cs" />
     <Compile Include="Test\SocialNetworksTest.cs" />
-    <Compile Include="Test\WomenClothingTest.cs" />
+    <Compile Include="Test\WomenClothingAndBasketTest.cs" />
     <Compile Include="Tools\MyScreenshot.cs" />
   </ItemGroup>
   <ItemGroup />

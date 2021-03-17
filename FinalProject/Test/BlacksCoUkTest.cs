@@ -12,16 +12,6 @@ namespace FinalProject.Test
     public class BlacksCoUkTest : BaseTest
     {
         
-        [TestCase("MAGNUM", TestName = "Check search field with Brand")]
-        public static void TestSearchFieldByBrand(string brand)
-        {
-            blacksCoUkPage.NavigateToDafaultPage();
-            blacksCoUkPage.ChlickAndWriteOnSearchField(brand);
-            blacksCoUkPage.ClickSearchButton();
-            blacksCoUkPage.CheckBrandResultThroughTheSearchField(brand);
-
-        }
-
         [Test]
         [TestCase(MeniuEnumeration.Blog, TestName = "Check Blog meniu button ")]
         [TestCase(MeniuEnumeration.Activities, TestName = "Check Activities meniu botton")]
@@ -34,7 +24,13 @@ namespace FinalProject.Test
             blacksCoUkPage.CheckOrALLMeniuWork(text);
         }
 
-       
-
+        [TestCase("MAGNUM", TestName = "Check search field with Brand")]
+        public static void TestSearchFieldByBrand(string brand)
+        {
+            blacksCoUkPage.NavigateToDafaultPage();
+            blacksCoUkPage.ChlickAndWriteOnSearchField(brand);
+            blacksCoUkPage.ClickSearchButton();
+            blacksCoUkPage.CheckBrandResultThroughTheSearchField(brand);
+        }
     }
 }
