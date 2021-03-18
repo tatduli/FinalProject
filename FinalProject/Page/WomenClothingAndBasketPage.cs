@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FinalProject.Page
@@ -32,7 +33,16 @@ namespace FinalProject.Page
         private IWebElement _nextDayDeliveryPrice => Driver.FindElement(By.XPath("//div[2]/label/span/span[2]"));
         private IWebElement _scrollMouseToSubtotal => Driver.FindElement(By.CssSelector(".basket_totals_container"));        
         private IWebElement _sortByField => Driver.FindElement(By.Id("productlist_sort_by_top"));
-        private SelectElement _sortByDropDown => new SelectElement(Driver.FindElement(By.Id("productlist_sort_by_top")));     
+        private IWebElement _priceSlider => Driver.FindElement(By.Id("price-slider"));
+        private IWebElement _scrollMouseToReview => Driver.FindElement(By.XPath("//nav/div[11]/h3/span"));
+        private IWebElement _rightSlider => Driver.FindElement(By.XPath("//div[@id='price-slider']/div/div[3]/div"));
+        private IWebElement _leftSlider => Driver.FindElement(By.XPath("//div[@id='price-slider']/div/div/div"));
+        private IWebElement _priceMaxSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(10) .price_max"));
+        private IWebElement _priceMinSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(10) .price_min"));
+        private SelectElement _sortByDropDown => new SelectElement(Driver.FindElement(By.Id("productlist_sort_by_top")));
+        
+
+        //
 
         List<IWebElement> productList;
         IReadOnlyCollection<IWebElement> productSizeCollection; 
@@ -50,80 +60,12 @@ namespace FinalProject.Page
             if (Driver.Url != UrlAddress)
                 Driver.Url = UrlAddress;
             return this;
-        }       
-
-        /// <summary>
-        /// Randą pasirinktinai produktą iš sąrašo
-        /// </summary>
-        /// <returns>grąžina produkto vietą sąraše</returns>
-        public int RandomProduct()
-        {
-            productList = new List<IWebElement>(womenClothingCollection);            
-            Random random = new Random();           
-            int randomElementIndex = random.Next(productList.Count);
-            return randomElementIndex;
         }
 
-        /// <summary>
-        /// išrenkamas atsitiktinis produktas
-        /// </summary>
-        /// <param name="randomElementIndex"></param>
-        public void ClickOnRandomProduct(int randomElementIndex)
-        {
-            productList = new List<IWebElement>(womenClothingCollection);            
-            productList[randomElementIndex].Click(); //+1
-        }
-
-        /// <summary>
-        /// randamas atsitiktinis rūbo dydis
-        /// </summary>
-        /// <returns>atsitiktio rūbo dydžio indekso grąžinimas</returns>
-        public int RandomProductSize()
-        {            
-            Random random = new Random();
-            productSizeCollection = _allProducstSize.FindElements(By.TagName("li"));
-            int randomSizeIndex = random.Next(productSizeCollection.Count);
-            return randomSizeIndex;
-        }
-
-        /// <summary>
-        /// išrenkamas atsitiktis rūbo dydis
-        /// </summary>
-        /// <param name="randomElementIndex">atsitiktinai išrinkto rūbo dydžio indeksas</param>
-        public void ClickOnRandomProductSize(int randomElementIndex)
-        {
-            productSizeCollection = _allProducstSize.FindElements(By.TagName("li"));
-            sizeList = new List<IWebElement>(productSizeCollection);           
-            sizeList[randomElementIndex].Click();
-        }
-
-        public void AddToBasket()
-        {
-            _addToBasketButton.Click();
-        }
-
-        public void CloseMiniBasket()
-        {
-            _miniBasketWindows.Click();
-        }
-
-        public void ViewBasket()
-        {
-            _viewBasketButton.Click();
-        }
-
-        public void StandardDeliveryCheckBox(bool standardDelivery)
-        {
-            if (standardDelivery != _standardDeliveryCheckBox.Selected)
-                _standardDeliveryCheckBox.Click();            
-        }
-
-        public void NextDayDeliveryCheckBox(bool nextDayDelivery)
-        {
-            if (nextDayDelivery != _nextDayDeliveryCheckBox.Selected)
-                _nextDayDeliveryCheckBox.Click();
-        }
-
+        //========================================================================
+        //                             TEST SIZE
+        //========================================================================
+       
         /// <summary>
         /// pasirenka atsitiktinį produktą ir grąžina jo kainos ir išrinkto produkto pavadinimo indeksus
         /// </summary>
@@ -154,7 +96,9 @@ namespace FinalProject.Page
                            $"{sizeList[sizeIndex].Text}, and the recorded size was {_selectedSize.Text}"));
         }
 
-        //------------------------------------------------------------------------------------
+        //========================================================================
+        //                             SELECT BRAND AND CHECK SIDE
+        //========================================================================
         // NESIGAUNA - Išrinkti kelis brendus ir patikrinti puslapį
         public void ClickOnSelectedBrand(string brand)
         {
@@ -276,30 +220,23 @@ namespace FinalProject.Page
             if (sortAscOrDsc == "Dsc")
                 Assert.That(newSortedWomenClothingListByAlphabet, Is.Ordered.Descending, "The products are badly sorted");
         }
-        
 
-        /// <summary>
-        /// Suskaičiuoja krepšialyje esančių prekių bendrą sumą
-        /// </summary>
-        /// <returns></returns>
-        public double CountTotalPriceInBasket()
+
+        //========================================================================
+        //                             CHECK TOTAL PRICE IN THE BASKET
+        //========================================================================
+       
+        public void StandardDeliveryCheckBox(bool standardDelivery)
         {
-            IReadOnlyCollection<IWebElement> allProductPriceInBasket = Driver.FindElements(By.XPath("//tr[@class = 'basket_border']"));// kai iškeliu į išorę vienu mažiau krepšelyje būna
-            List<IWebElement> allProductInBasketList = new List<IWebElement>(allProductPriceInBasket);
-            double allProductPrice = 0;
-
-            for (int i = 1; i < allProductInBasketList.Count; i++)
-            {
-                
-                var moneyString = Driver.FindElement(By.XPath("//tr[" + (i).ToString() + "]/td/table/tbody/tr/td[2]/span")).Text.ToString();                
-                double productPrice = ConvertFromStringToDouble(moneyString);
-                allProductPrice += productPrice;              
-                
-            }
-            return allProductPrice;
+            if (standardDelivery != _standardDeliveryCheckBox.Selected)
+                _standardDeliveryCheckBox.Click();
         }
-        //----------------------------------------------------------------------
-        //KAINOS KKREPŠELYJE PATIKRINIMAS
+
+        public void NextDayDeliveryCheckBox(bool nextDayDelivery)
+        {
+            if (nextDayDelivery != _nextDayDeliveryCheckBox.Selected)
+                _nextDayDeliveryCheckBox.Click();
+        }
         public double ConvertTotalPriceInBasket()
         {
             string totalPriceInString = _totalPriceInBasket.Text;
@@ -327,6 +264,27 @@ namespace FinalProject.Page
             MouseScrollDownPage(_scrollMouseToSubtotal);
         }
 
+
+        /// <summary>
+        /// Suskaičiuoja krepšialyje esančių prekių bendrą sumą
+        /// </summary>
+        /// <returns></returns>
+        public double CountTotalPriceInBasket()
+        {
+            IReadOnlyCollection<IWebElement> allProductPriceInBasket = Driver.FindElements(By.XPath("//tr[@class = 'basket_border']"));// kai iškeliu į išorę vienu mažiau krepšelyje būna
+            List<IWebElement> allProductInBasketList = new List<IWebElement>(allProductPriceInBasket);
+            double allProductPrice = 0;
+
+            for (int i = 1; i < allProductInBasketList.Count; i++)
+            {
+
+                var moneyString = Driver.FindElement(By.XPath("//tr[" + (i).ToString() + "]/td/table/tbody/tr/td[2]/span")).Text.ToString();
+                double productPrice = ConvertFromStringToDouble(moneyString);
+                allProductPrice += productPrice;
+
+            }
+            return allProductPrice;
+        }
         public void CheckTotalPrice(bool standardDelivery, bool nextDayDelivery)
         {                        
             if (standardDelivery && !nextDayDelivery)
@@ -355,6 +313,56 @@ namespace FinalProject.Page
             }
                
         }
+
+        //========================================================================
+        //                             SLIDER
+        //========================================================================
+        public void MoveSliderWantedRange(int minPrice, int maxPrice)
+        {           
+            Actions move = new Actions(Driver);
+            
+            MouseScrollDownPage(_scrollMouseToReview);
+            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);         
+            double sliderWidth = Convert.ToDouble(_priceSlider.Size.Width);          
+            double converPriceMinSlider = Convert.ToDouble(_priceMinSlider.Text);
+            double calculateOffset = (float)minPrice / converPriceMaxSlider;
+            double offsetMin = (float)sliderWidth * calculateOffset;
+            double offsetMax = (float)sliderWidth * ((converPriceMaxSlider - maxPrice) / converPriceMaxSlider);
+            Console.WriteLine(offsetMax);
+
+            MoveLeft((int)offsetMin);
+
+            //move.ClickAndHold(_leftSlider).MoveByOffset((int)offsetMin, 0).Release().Perform();
+            //Thread.Sleep(1000);
+            ////move.MoveToElement(_priceSlider, 30, 0);
+            ////MouseScrollDownPage(_scrollMouseToReview);
+
+            //move.ClickAndHold(_rightSlider).MoveByOffset((int)-100, 0).Release().Perform() ;
+            //Thread.Sleep(1000);
+            //move.ClickAndHold(_rightSlider).MoveByOffset((int)-70, 0).Release().Perform();
+            MoveRight(100);
+            //MoveRight(70);
+
+        }
+
+        public void MoveLeft(int minPrice)
+
+        {
+            Actions move = new Actions(Driver);
+            move.ClickAndHold(_leftSlider).MoveByOffset((int)minPrice, 0).Release().Perform();
+        }
+
+        public void MoveRight(int maxPrice)
+
+        {
+            Actions move = new Actions(Driver);
+            move.ClickAndHold(_rightSlider).MoveByOffset((int)-maxPrice, 0).Release().Perform();
+        }
+
+
+        //========================================================================
+        //                              PRIVATE METODE
+        //========================================================================
 
         /// <summary>
         /// Panaikina pirmą simbolį ir konertuoja tekstinį skaičių į double
@@ -391,6 +399,66 @@ namespace FinalProject.Page
                 //article.three:nth-child(2)
             }
             return priceList;
+        }
+
+
+        /// <summary>
+        /// Randą pasirinktinai produktą iš sąrašo
+        /// </summary>
+        /// <returns>grąžina produkto vietą sąraše</returns>
+        private int RandomProduct()
+        {
+            productList = new List<IWebElement>(womenClothingCollection);
+            Random random = new Random();
+            int randomElementIndex = random.Next(productList.Count);
+            return randomElementIndex;
+        }
+
+        /// <summary>
+        /// išrenkamas atsitiktinis produktas
+        /// </summary>
+        /// <param name="randomElementIndex"></param>
+        private void ClickOnRandomProduct(int randomElementIndex)
+        {
+            productList = new List<IWebElement>(womenClothingCollection);
+            productList[randomElementIndex].Click(); //+1
+        }
+
+        /// <summary>
+        /// randamas atsitiktinis rūbo dydis
+        /// </summary>
+        /// <returns>atsitiktio rūbo dydžio indekso grąžinimas</returns>
+        private int RandomProductSize()
+        {
+            Random random = new Random();
+            productSizeCollection = _allProducstSize.FindElements(By.TagName("li"));
+            int randomSizeIndex = random.Next(productSizeCollection.Count);
+            return randomSizeIndex;
+        }
+        private void AddToBasket()
+        {
+            _addToBasketButton.Click();
+        }
+
+        private void CloseMiniBasket()
+        {
+            _miniBasketWindows.Click();
+        }
+
+        private void ViewBasket()
+        {
+            _viewBasketButton.Click();
+        }
+
+        /// <summary>
+        /// išrenkamas atsitiktis rūbo dydis
+        /// </summary>
+        /// <param name="randomElementIndex">atsitiktinai išrinkto rūbo dydžio indeksas</param>
+        private void ClickOnRandomProductSize(int randomElementIndex)
+        {
+            productSizeCollection = _allProducstSize.FindElements(By.TagName("li"));
+            sizeList = new List<IWebElement>(productSizeCollection);
+            sizeList[randomElementIndex].Click();
         }
 
         /// <summary>

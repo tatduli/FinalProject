@@ -56,13 +56,20 @@ namespace FinalProject.Test
 
         [TestCase("whitaker", TestName = "Test brand WHITAKER")]
         [TestCase("merrell", TestName = "Test brand MERRELL")]
-        public void bandau(string brand)
+        public void TestOrSelectedBrandLoadInPage(string brand)
         {
             womenClothingPage.NavigateToDafaultPage();
             //var brand = brands.Split(',').ToList();
             womenClothingPage.ClickOnSelectedBrand(brand);
             womenClothingPage.NavigateToNewPage(brand);
             womenClothingPage.CheckOrInNewPageAreSelectedBrand(brand);
+        }
+
+        [Test]
+        public void SLIDER()
+        {
+            womenClothingPage.NavigateToDafaultPage();
+            womenClothingPage.MoveSliderWantedRange(50, 150);
         }
     }
 }

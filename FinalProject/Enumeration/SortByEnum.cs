@@ -17,9 +17,7 @@ namespace FinalProject.Enumeration
         High_to_Low,
         Low_to_High,
         A_to_Z,
-        Z_to_A
-
-        
+        Z_to_A        
     }
 
     //public static class EnumExtensionMethods
