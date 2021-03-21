@@ -15,7 +15,7 @@ namespace FinalProject.Test
     public class BaseTest
     {
         public static IWebDriver driver;
-        public static BlacksCoUkPage blacksCoUkPage;
+        public static BlacksCoUkDefaultPage blacksCoUkPage;
         public static OneProductPage oneProductPage;
         public static WomenClothingAndBasketPage womenClothingPage;
         public static SocialNetworksPage socialNetworksPage;
@@ -26,7 +26,7 @@ namespace FinalProject.Test
         public static void SetUp()
         {
             driver = CustomDriver.GetIncognitoChrome();
-            blacksCoUkPage = new BlacksCoUkPage(driver);
+            blacksCoUkPage = new BlacksCoUkDefaultPage(driver);
             oneProductPage = new OneProductPage(driver);
             womenClothingPage = new WomenClothingAndBasketPage(driver);
             socialNetworksPage = new SocialNetworksPage(driver);

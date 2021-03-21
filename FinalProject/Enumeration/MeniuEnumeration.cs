@@ -17,7 +17,7 @@ namespace FinalProject.Enumeration
         Camping,
         Cycling,
         Activities,
-        Brand,
+        Brands,
         Blog
     }
 }

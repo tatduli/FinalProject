@@ -1,15 +1,14 @@
 ﻿using FinalProject.Enumeration;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+//Test all meniu button. 
+//Test search field by brand. 
+//Test email from file and print result in file
 
 namespace FinalProject.Test
 {
-    public class BlacksCoUkTest : BaseTest
+    public class BlacksCoUkDafaultTest : BaseTest
     {
         
         [Test]
@@ -17,6 +16,11 @@ namespace FinalProject.Test
         [TestCase(MeniuEnumeration.Activities, TestName = "Check Activities meniu botton")]
         [TestCase(MeniuEnumeration.Men, TestName = "Check Men meniu botton")]
         [TestCase(MeniuEnumeration.Sale, TestName = "Check Sale meniu botton")]
+        [TestCase(MeniuEnumeration.Brands, TestName = "Check Brands meniu botton")]
+        [TestCase(MeniuEnumeration.Camping, TestName = "Check Camping meniu botton")]
+        [TestCase(MeniuEnumeration.Cycling, TestName = "Check Cycling meniu botton")]
+        [TestCase(MeniuEnumeration.Kids, TestName = "Check Kids meniu botton")]
+        [TestCase(MeniuEnumeration.Equipment, TestName = "Check Equipment meniu botton")]
         public static void TestSelectedBotton(Enum text)
         {
             blacksCoUkPage.NavigateToDafaultPage();
@@ -31,6 +35,13 @@ namespace FinalProject.Test
             blacksCoUkPage.ChlickAndWriteOnSearchField(brand);
             blacksCoUkPage.ClickSearchButton();
             blacksCoUkPage.CheckBrandResultThroughTheSearchField(brand);
+        }
+
+        [Test]
+        public static void TestSubmitEmail()
+        {
+            blacksCoUkPage.NavigateToDafaultPage();
+            blacksCoUkPage.CheckEmailSubmitFieldFromDataFile();            
         }
     }
 }

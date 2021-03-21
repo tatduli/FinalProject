@@ -65,11 +65,16 @@ namespace FinalProject.Test
             womenClothingPage.CheckOrInNewPageAreSelectedBrand(brand);
         }
 
-        [Test]
-        public void SLIDER()
+        [TestCase(50, 300, TestName = "Slider range [50, 300]")]
+        [TestCase(0, 300, TestName = "Slider range [0, 300]")]
+        [TestCase(50, 100, TestName = "Slider range [50, 100]")]
+        [TestCase(200, 300, TestName = "Slider range [200, 300]")]
+
+        public void TestPriceSlider(int minPrice, int maxPrice)
         {
             womenClothingPage.NavigateToDafaultPage();
-            womenClothingPage.MoveSliderWantedRange(50, 150);
+            womenClothingPage.MoveSliderWantedRange(minPrice, maxPrice);
+            womenClothingPage.TestSliderPriceWithPagePrice(minPrice, maxPrice);
         }
     }
 }

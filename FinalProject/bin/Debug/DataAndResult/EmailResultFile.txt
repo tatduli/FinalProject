@@ -1,0 +1,23 @@
+|-----------------------------------------------|-------------|-------------|
+|                  Email                        |   Expected  |   Result    | 
+|-----------------------------------------------|-------------|-------------|
+| Abc..123@example.com                          | Invalid      | Failed     |
+| “(),:;<>[\]@example.com                       | Invalid      | Passed     |
+| just"not"right@example.com                    | Invalid      | Passed     |
+| this\ is"really"not\allowed@example.com       | Invalid      | Passed     |
+| plainaddress                                  | Invalid      | Passed     |
+| #@%^%#$@#$@#.com                              | Invalid      | Passed     |
+| @example.com                                  | Invalid      | Passed     |
+| Joe Smith <email@example.com>                 | Invalid      | Passed     |
+| email.example.com                             | Invalid      | Passed     |
+| email@example@example.com                     | Invalid      | Passed     |
+| .email@example.com                            | Invalid      | Failed     |
+| email.@example.com                            | Invalid      | Failed     |
+| email..email@example.com                      | Invalid      | Failed     |
+| あいうえお@example.com                             | Invalid      | Passed     |
+| email@example.com (Joe Smith)                 | Invalid      | Passed     |
+| email@example                                 | Invalid      | Passed     |
+| email@-example.com                            | Invalid      | Passed     |
+| email@example.web                             | Invalid      | Passed     |
+| email@111.222.333.44444                       | Invalid      | Passed     |
+| email@example..com                            | Invalid      | Passed     |

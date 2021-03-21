@@ -63,14 +63,14 @@
     <Compile Include="List\SortByList.cs" />
     <Compile Include="Page\BasePage.cs" />
     <Compile Include="Page\OneProductPage.cs" />
-    <Compile Include="Page\BlacksCoUkPage.cs" />
+    <Compile Include="Page\BlacksCoUkDefaultPage.cs" />
     <Compile Include="Page\BrandsPage.cs" />
     <Compile Include="Page\SocialNetworksPage.cs" />
     <Compile Include="Page\WomenClothingAndBasketPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\BaseTest.cs" />
     <Compile Include="Test\OneProductTest.cs" />
-    <Compile Include="Test\BlacksCoUkTest.cs" />
+    <Compile Include="Test\BlacksCoUkDafaultTest.cs" />
     <Compile Include="Test\BrandsTest.cs" />
     <Compile Include="Test\SocialNetworksTest.cs" />
     <Compile Include="Test\WomenClothingAndBasketTest.cs" />
@@ -84,6 +84,9 @@
     <Content Include="..\packages\WebDriver.ChromeDriver.win32.88.0.4324.96\content\chromedriver.exe">
       <Link>chromedriver.exe</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataAndResult\InvalidEmailData.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

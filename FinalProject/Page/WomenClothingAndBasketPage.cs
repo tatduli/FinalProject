@@ -40,9 +40,10 @@ namespace FinalProject.Page
         private IWebElement _priceMaxSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(10) .price_max"));
         private IWebElement _priceMinSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(10) .price_min"));
         private SelectElement _sortByDropDown => new SelectElement(Driver.FindElement(By.Id("productlist_sort_by_top")));
-        
+
 
         //
+       
 
         List<IWebElement> productList;
         IReadOnlyCollection<IWebElement> productSizeCollection; 
@@ -132,9 +133,10 @@ namespace FinalProject.Page
                 Assert.IsTrue(brand.ToLower().Contains( brandNameOneItem.ToLower()));
             }           
         }
-
-        //-------------------------------------------------------------------------
-        //RIKIAVIMO TESUI
+        
+        //========================================================================
+        //                             SORT TEST
+        //========================================================================
         public void ClickOnSortBy()
         {
             _sortByField.Click();
@@ -315,24 +317,31 @@ namespace FinalProject.Page
         }
 
         //========================================================================
-        //                             SLIDER
+        //                            TEST PRICE SLIDER
         //========================================================================
+ 
         public void MoveSliderWantedRange(int minPrice, int maxPrice)
         {           
             Actions move = new Actions(Driver);
-            
-            MouseScrollDownPage(_scrollMouseToReview);
-            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);         
-            double sliderWidth = Convert.ToDouble(_priceSlider.Size.Width);          
+            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);
             double converPriceMinSlider = Convert.ToDouble(_priceMinSlider.Text);
-            double calculateOffset = (float)minPrice / converPriceMaxSlider;
-            double offsetMin = (float)sliderWidth * calculateOffset;
-            double offsetMax = (float)sliderWidth * ((converPriceMaxSlider - maxPrice) / converPriceMaxSlider);
-            Console.WriteLine(offsetMax);
+            MouseScrollDownPage(_scrollMouseToReview);
+            (double, double) offset = ConvertSliderMinPriceAndMaxPriceToPixselOffset(minPrice, maxPrice, 
+                                                                                     converPriceMaxSlider, converPriceMinSlider);
 
-            MoveLeft((int)offsetMin);
-
-            //move.ClickAndHold(_leftSlider).MoveByOffset((int)offsetMin, 0).Release().Perform();
+            if (minPrice >= converPriceMinSlider)
+            {
+                MoveLeft((int)offset.Item1);
+                Thread.Sleep(1000);
+            }              
+            
+            if (maxPrice <= converPriceMaxSlider)
+            {
+                MoveRight((int)offset.Item2);
+                Thread.Sleep(1000);
+            }                
+                   
+             //move.ClickAndHold(_leftSlider).MoveByOffset((int)offsetMin, 0).Release().Perform();
             //Thread.Sleep(1000);
             ////move.MoveToElement(_priceSlider, 30, 0);
             ////MouseScrollDownPage(_scrollMouseToReview);
@@ -340,23 +349,41 @@ namespace FinalProject.Page
             //move.ClickAndHold(_rightSlider).MoveByOffset((int)-100, 0).Release().Perform() ;
             //Thread.Sleep(1000);
             //move.ClickAndHold(_rightSlider).MoveByOffset((int)-70, 0).Release().Perform();
-            MoveRight(100);
+            //MoveRight(100);
             //MoveRight(70);
-
         }
 
         public void MoveLeft(int minPrice)
-
         {
             Actions move = new Actions(Driver);
             move.ClickAndHold(_leftSlider).MoveByOffset((int)minPrice, 0).Release().Perform();
         }
 
         public void MoveRight(int maxPrice)
-
         {
             Actions move = new Actions(Driver);
             move.ClickAndHold(_rightSlider).MoveByOffset((int)-maxPrice, 0).Release().Perform();
+        }
+        
+        public void TestSliderPriceWithPagePrice(int minPrice, int maxPrice)
+        {
+            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);
+            Console.WriteLine(maxPrice);
+            Console.WriteLine(converPriceMaxSlider);
+            if (maxPrice <= converPriceMaxSlider + 3  && maxPrice >= converPriceMaxSlider - 3)//pix paklaida
+            {
+                for (int i = 0; i < womenClothingCollection.Count - 1; i++)//
+                {
+                    string priceItemInWomenCollection = Driver.FindElement(By.XPath("//article[(" + (i + 1).ToString() + ")]/div/a/span/span")).Text;
+                    double convertedPriceItemInWomenCollection = ConvertFromStringToDouble(priceItemInWomenCollection);
+
+                    Assert.That(convertedPriceItemInWomenCollection, Is.GreaterThanOrEqualTo(minPrice), "Price is less than I want");
+                    Assert.That(convertedPriceItemInWomenCollection, Is.LessThanOrEqualTo(maxPrice), "Price is greater than I want");
+                }
+            }
+            else
+                Assert.True(maxPrice <= converPriceMaxSlider + 3 && maxPrice >= converPriceMaxSlider - 3, "Slider don't move or don't fix");
+         
         }
 
 
@@ -395,12 +422,23 @@ namespace FinalProject.Page
             for (int i = 0; i < womenClothingCollection.Count - 1; i++)//
             {
                 string priceSelectedItem = Driver.FindElement(By.XPath("//article[(" + (i + 1).ToString() + ")]/div/a/span/span")).Text;   //kaina             
-                priceList.Add(ConvertFromStringToDouble(priceSelectedItem));
-                //article.three:nth-child(2)
+                priceList.Add(ConvertFromStringToDouble(priceSelectedItem));               
             }
             return priceList;
         }
 
+        private (double, double) ConvertSliderMinPriceAndMaxPriceToPixselOffset(int minPrice, int maxPrice,
+                                                                                double converPriceMaxSlider, double converPriceMinSlider)
+        {            
+            double sliderWidth = Convert.ToDouble(_priceSlider.Size.Width);            
+            
+            double offsetMin = (float)sliderWidth * (minPrice / converPriceMaxSlider);
+
+            double offsetMax = (float)sliderWidth * ((converPriceMaxSlider - maxPrice) / converPriceMaxSlider);
+            Console.WriteLine(offsetMax);
+
+            return (offsetMin, offsetMax);
+        }
 
         /// <summary>
         /// Randą pasirinktinai produktą iš sąrašo
