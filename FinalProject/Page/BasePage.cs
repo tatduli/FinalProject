@@ -40,6 +40,45 @@ namespace FinalProject.Page
             return this;
         }
 
+        /// <summary>
+        /// Randą pasirinktinai produktą iš sąrašo
+        /// </summary>
+        /// <returns>grąžina produkto vietą sąraše</returns>
+        public int RandomProduct(List<IWebElement> productList)
+        {            
+            Random random = new Random(); 
+            int randomElementIndex = random.Next(productList.Count);
+            return randomElementIndex;
+        }
+
+        /// <summary>
+        /// išrenkamas atsitiktinis produktas
+        /// </summary>
+        /// <param name="randomElementIndex"></param>
+        public void ClickOnRandomProduct(int randomElementIndex, List<IWebElement> productList)
+        {            
+            productList[randomElementIndex].Click(); //+1
+        }
+
+        public int RandomProductSize(IWebElement _allProducstSize)
+        {
+            Random random = new Random();
+            IReadOnlyCollection<IWebElement> productSizeCollection = _allProducstSize.FindElements(By.TagName("li"));
+            
+            int randomSizeIndex = random.Next(productSizeCollection.Count);
+            
+            return randomSizeIndex;
+        }
+
+        /// <summary>
+        /// išrenkamas atsitiktis rūbo dydis
+        /// </summary>
+        /// <param name="randomElementIndex">atsitiktinai išrinkto rūbo dydžio indeksas</param>
+        public void ClickOnRandomProductSize(int randomElementIndex, List<IWebElement> sizeList)
+        {
+            sizeList[randomElementIndex].Click();
+        }
+
         public void CloseBrowser()
         {
             Driver.Quit();

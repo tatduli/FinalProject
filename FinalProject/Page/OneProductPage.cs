@@ -10,18 +10,15 @@ namespace FinalProject.Page
 {
     public class OneProductPage : BasePage
     {
-        private const string UrlAddress = "https://www.blacks.co.uk/basket/";
-       
-        IReadOnlyCollection<IWebElement> basketList => Driver.FindElements(By.CssSelector(".basket-item-price"));
+        private const string UrlAddress = "https://www.blacks.co.uk/basket/";       
+      
         IReadOnlyCollection<IWebElement> findedProductList => Driver.FindElements(By.CssSelector(".product-img-box"));
         private IWebElement _productNameOnNewPage => Driver.FindElement(By.CssSelector(".product-name"));
         private IWebElement _productSalePriceOnNewPage => Driver.FindElement(By.CssSelector(".special"));
-        private IWebElement _productRegularPriceOnNewPage => Driver.FindElement(By.CssSelector(".regular-price"));
-        private IWebElement _addToBasketButton => Driver.FindElement(By.CssSelector("form.price-options-buy:nth-child(1)>div:nth-child(1)>div:nth-child(1)>div:nth-child(2)>fieldset:nth-child(1)>input:nth-child(3)"));
+        private IWebElement _productRegularPriceOnNewPage => Driver.FindElement(By.CssSelector(".regular-price"));        
 
         public OneProductPage(IWebDriver webDriver) : base(webDriver) 
-        {           
-        }
+        {  }
 
         public OneProductPage NavigateToDafaultPage()
         {
@@ -29,6 +26,7 @@ namespace FinalProject.Page
                 Driver.Url = UrlAddress;
             return this;
         }
+
         public int RandomProduct()
         {
             List<IWebElement> productList = new List<IWebElement>(findedProductList);

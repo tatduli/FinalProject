@@ -17,10 +17,11 @@ namespace FinalProject.Test
         public static IWebDriver driver;
         public static BlacksCoUkDefaultPage blacksCoUkPage;
         public static OneProductPage oneProductPage;
-        public static WomenClothingAndBasketPage womenClothingPage;
+        public static WomenClothingPage womenClothingPage;
         public static SocialNetworksPage socialNetworksPage;
-        public static WomenClothingAndBasketPage naujas;
-        //public static BasketPage basketPage;
+        public static BasketPage basketPage;
+        //public static WomenClothingAndBasketPage naujas;
+       
 
         [OneTimeSetUp]
         public static void SetUp()
@@ -28,11 +29,10 @@ namespace FinalProject.Test
             driver = CustomDriver.GetIncognitoChrome();
             blacksCoUkPage = new BlacksCoUkDefaultPage(driver);
             oneProductPage = new OneProductPage(driver);
-            womenClothingPage = new WomenClothingAndBasketPage(driver);
+            womenClothingPage = new WomenClothingPage(driver);
             socialNetworksPage = new SocialNetworksPage(driver);
-            naujas = new WomenClothingAndBasketPage(driver);
-
-            // basketPage = new BasketPage(driver);
+            basketPage = new BasketPage(driver);
+            //naujas = new WomenClothingAndBasketPage(driver);            
         }
 
 
