@@ -26,7 +26,7 @@ namespace FinalProject.Test
         [OneTimeSetUp]
         public static void SetUp()
         {
-            driver = CustomDriver.GetIncognitoChrome();
+            driver = CustomDriver.GetChromeDriver();
             blacksCoUkPage = new BlacksCoUkDefaultPage(driver);
             oneProductPage = new OneProductPage(driver);
             womenClothingPage = new WomenClothingPage(driver);

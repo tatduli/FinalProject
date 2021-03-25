@@ -267,6 +267,7 @@ namespace FinalProject.Page
             else
                 Assert.True(maxPrice <= converPriceMaxSlider + 3 && maxPrice >= converPriceMaxSlider - 3, "Slider don't move or don't fix");         
         }
+        //===========================================================================================
 
         /// <summary>
         /// Panaikina pirmą simbolį ir konertuoja tekstinį skaičių į double
