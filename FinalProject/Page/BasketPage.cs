@@ -26,7 +26,8 @@ namespace FinalProject.Page
         private IWebElement _totalProductInBasket => Driver.FindElement(By.CssSelector(".total-items"));
         private IWebElement _productPriceInBasket => Driver.FindElement(By.XPath("//form[@id='basket_form']/table/tbody/tr/td/table/tbody/tr/td/span/p/span[2]"));
         private IWebElement _buttonIncrease => Driver.FindElement(By.XPath("//form[@id='basket_form']/table/tbody/tr/td/table/tbody/tr/td/div/span/button[2]"));
-        //increment
+        //basket_voucher template_basket_row group
+        private IWebElement _scrollMouseToVoucher => Driver.FindElement(By.CssSelector(".del"));
         IReadOnlyCollection<IWebElement> womenClothingCollection => Driver.FindElements(By.CssSelector(".product-item"));
         IReadOnlyCollection<IWebElement> productsCountCollection => Driver.FindElements(By.CssSelector(".basket_data basket_loading_off"));
         IReadOnlyCollection<IWebElement> allProductInBasket => Driver.FindElements(By.XPath("//span[@class = 'basket_item_text']"));
@@ -182,7 +183,9 @@ namespace FinalProject.Page
             {
                 MouseScrollDownPage(_buttonIncrease);
                 Increase();
-                GetWait(10);                                   
+                GetWait(10);
+                //MouseScrollDownPage(_totalProductInBasket);
+                Driver.SwitchTo();
             }                 
         }
 
@@ -200,14 +203,23 @@ namespace FinalProject.Page
         public void CheckProductPriceInBasketAfterIncrease(int howMuchIncrease)
         {
             AddProductsInBasketAndIncrease(howMuchIncrease);
+            Console.WriteLine("+++++++++++++++++++++++++");
             MouseScrollDownPage(_totalProductInBasket);
+            
             Console.WriteLine(_productPriceInBasket.Text);
             double productPriceInBasket = WomenClothingPage.ConvertFromStringToDouble(_productPriceInBasket.Text);
+
             Console.WriteLine(productPriceInBasket);
             Console.WriteLine(howMuchIncrease);
+
             double sum = productPriceInBasket * howMuchIncrease;
-            Assert.AreEqual(sum, productPriceInBasket, "Price isn't correct");
+            
+            MouseScrollDownPage(_scrollMouseToVoucher);
+            //Driver.SwitchTo();
+            Assert.AreEqual(sum, productPriceInBasket, $"Price isn't correct. as suskaiciuoju {sum}");
         }
+
+
         public void Increase()
         {
             _buttonIncrease.Click();

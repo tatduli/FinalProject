@@ -32,7 +32,8 @@ namespace FinalProject.Test
             womenClothingPage = new WomenClothingPage(driver);
             socialNetworksPage = new SocialNetworksPage(driver);
             basketPage = new BasketPage(driver);
-            //naujas = new WomenClothingAndBasketPage(driver);            
+            //naujas = new WomenClothingAndBasketPage(driver);      
+           // driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
 

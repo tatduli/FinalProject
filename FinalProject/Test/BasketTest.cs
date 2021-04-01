@@ -34,18 +34,19 @@ namespace FinalProject.Test
             basketPage.CheckProductCountInBasket();
         }
 
-        [TestCase(3, TestName = "3 times increase")]
+        [TestCase(3, TestName = "3 times increase and check product count")]
         public void TestIncreaseButton(int howMuchIncrease)
         {
             womenClothingPage.NavigateToDafaultPage();
             basketPage.CheckProductCountInBasketAfterIncrease(howMuchIncrease);           
         }
 
-        [TestCase(2, TestName = "2 times increase")]
-
+        [TestCase(3, TestName = "2 times increase and check produkt total price")]
+        //[Test]
         public void TestProductAmountAfterTheQuantityIncrease(int howMuchIncrease)
         {
-            TestIncreaseButton(howMuchIncrease);
+            //TestIncreaseButton(/*howMuchIncrease*/1);
+            womenClothingPage.NavigateToDafaultPage();
             basketPage.CheckProductPriceInBasketAfterIncrease(howMuchIncrease);
         }
 

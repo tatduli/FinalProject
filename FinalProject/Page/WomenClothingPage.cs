@@ -27,8 +27,8 @@ namespace FinalProject.Page
         private IWebElement _scrollMouseToReview => Driver.FindElement(By.XPath("//nav/div[11]/h3/span"));
         private IWebElement _rightSlider => Driver.FindElement(By.XPath("//div[@id='price-slider']/div/div[3]/div"));
         private IWebElement _leftSlider => Driver.FindElement(By.XPath("//div[@id='price-slider']/div/div/div"));
-        private IWebElement _priceMaxSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(10) .price_max"));
-        private IWebElement _priceMinSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(10) .price_min"));      
+        private IWebElement _priceMaxSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(8) .price_max"));
+        private IWebElement _priceMinSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(8) .price_min"));      
 
         List<IWebElement> productList;        
         List<IWebElement> sizeList;       
@@ -215,14 +215,15 @@ namespace FinalProject.Page
         //========================================================================
  
         public void MoveSliderWantedRange(int minPrice, int maxPrice)
-        {           
-            Actions move = new Actions(Driver);
-            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);
+        {            
+            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);            
             double converPriceMinSlider = Convert.ToDouble(_priceMinSlider.Text);
+            
             MouseScrollDownPage(_scrollMouseToReview);
+           
             (double, double) offset = ConvertSliderMinPriceAndMaxPriceToPixselOffset(minPrice, maxPrice, 
                                                                                      converPriceMaxSlider, converPriceMinSlider);
-
+           
             if (minPrice >= converPriceMinSlider)
             {
                 MoveLeft((int)offset.Item1);
@@ -259,8 +260,8 @@ namespace FinalProject.Page
                 {
                     string priceItemInWomenCollection = Driver.FindElement(By.XPath("//article[(" + (i + 1).ToString() + ")]/div/a/span/span")).Text;
                     double convertedPriceItemInWomenCollection = ConvertFromStringToDouble(priceItemInWomenCollection);
-
-                    Assert.That(convertedPriceItemInWomenCollection, Is.GreaterThanOrEqualTo(minPrice), "Price is less than I want");
+                    //imu 3 paklaidą, nes tiksliai neapskaiciuoja
+                    Assert.That(convertedPriceItemInWomenCollection, Is.GreaterThanOrEqualTo(minPrice - 3), "Price is less than I want");
                     Assert.That(convertedPriceItemInWomenCollection, Is.LessThanOrEqualTo(maxPrice), "Price is greater than I want");
                 }
             }
