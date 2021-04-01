@@ -41,7 +41,7 @@ namespace FinalProject.Test
             basketPage.CheckProductCountInBasketAfterIncrease(howMuchIncrease);           
         }
 
-        [TestCase(3, TestName = "2 times increase and check produkt total price")]
+        [TestCase(3, TestName = "3 times increase and check produkt total price")]
         //[Test]
         public void TestProductAmountAfterTheQuantityIncrease(int howMuchIncrease)
         {
