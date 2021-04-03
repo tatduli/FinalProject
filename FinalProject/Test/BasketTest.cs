@@ -10,19 +10,14 @@ namespace FinalProject.Test
     public class BasketTest : BaseTest
     {
         [Order(1)]
-        [Repeat(2)]
-        //================PASIKEITE PUSLAPIS=================================
-        //[TestCase(false, false, TestName = "Test price without delivery")]
-        //[TestCase(true, false, TestName = "Test price with standard delivery")]
-        //[TestCase(false, true, TestName = "Test price with next day delivery")]
+        [Repeat(2)]       
 
         [Test]
         public void TestBasketPrice()
         {
             womenClothingPage.NavigateToDafaultPage();
             basketPage.AddProductToTheBasket();
-            basketPage.CheckTotalPrice();
-            //basketPage.CheckTotalPrice(standardDelivery, nextDayDelivery);
+            basketPage.CheckTotalPrice();           
         }
 
         [Order(2)]
@@ -41,11 +36,10 @@ namespace FinalProject.Test
             basketPage.CheckProductCountInBasketAfterIncrease(howMuchIncrease);           
         }
 
-        [TestCase(3, TestName = "3 times increase and check produkt total price")]
-        //[Test]
+        [TestCase(2, TestName = "2 times increase and check produkt total price")]
+       
         public void TestProductAmountAfterTheQuantityIncrease(int howMuchIncrease)
-        {
-            //TestIncreaseButton(/*howMuchIncrease*/1);
+        {            
             womenClothingPage.NavigateToDafaultPage();
             basketPage.CheckProductPriceInBasketAfterIncrease(howMuchIncrease);
         }
@@ -57,7 +51,6 @@ namespace FinalProject.Test
             basketPage.AddProductToTheBasket();
             basketPage.Increase();
             basketPage.CheckTotalPrice();
-
         }
 
     }

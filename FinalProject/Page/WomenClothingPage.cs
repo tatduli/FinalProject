@@ -90,14 +90,16 @@ namespace FinalProject.Page
         // NESIGAUNA - Išrinkti kelis brendus ir patikrinti puslapį
         public void ClickOnSelectedBrand(string brand)
         {
+            MessageBoxShow();
             var productBrandCollection = _allProductBrand.FindElements(By.XPath("//nav/div[3]/div/ul/li/a"));
-
+            
             MouseScrollDownPage(_scrollMouseToSize);
+           
             for (int i = 0; i < productBrandCollection.Count; i++)
-            {               
-                if(brand.Contains(productBrandCollection[i].Text.ToLower()))
-                {
-                    MouseScrollDownPage(_scrollMouseToSize);                    
+            {                
+                if (productBrandCollection[i].Text.ToLower().Contains(brand))               
+                {                    
+                    MouseScrollDownPage(_scrollMouseToSize);                   
                     productBrandCollection[i].Click();                    
                 }                
             }          

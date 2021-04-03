@@ -79,6 +79,18 @@ namespace FinalProject.Page
             sizeList[randomElementIndex].Click();
         }
 
+        public void MessageBoxShow()
+        {
+            try
+            {
+                Driver.FindElement(By.CssSelector("#monetate_allinone_lightbox > table > tbody > tr > td > span > img")).Click();
+            }
+            catch (NoSuchElementException)
+            {
+                return;
+            }
+        }
+
         public void CloseBrowser()
         {
             Driver.Quit();

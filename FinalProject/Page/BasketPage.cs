@@ -13,10 +13,7 @@ namespace FinalProject.Page
     {
         private const string UrlAddress = "https://www.blacks.co.uk/basket/";
 
-        private IWebElement _standardDeliveryCheckBox => Driver.FindElement(By.Id("delivery_option_87"));
-        private IWebElement _nextDayDeliveryCheckBox => Driver.FindElement(By.Id("delivery_option_1031"));
         private IWebElement _standardDeliveryPrice => Driver.FindElement(By.XPath("//label/span/span[2]"));
-        private IWebElement _nextDayDeliveryPrice => Driver.FindElement(By.XPath("//div[2]/label/span/span[2]"));
         private IWebElement _totalPriceInBasket => Driver.FindElement(By.CssSelector(".basket_total"));
         private IWebElement _scrollMouseToSubtotal => Driver.FindElement(By.CssSelector(".basket_totals_container"));
         private IWebElement _viewBasketButton => Driver.FindElement(By.CssSelector(".cta.btn-buy-process-primary.ga-ip"));
@@ -24,15 +21,13 @@ namespace FinalProject.Page
         private IWebElement _addToBasketButton => Driver.FindElement(By.XPath("//input[@type = 'submit']"));
         private IWebElement _allProducstSize => Driver.FindElement(By.XPath("//ul[@class = 'attribute_value_list group']"));
         private IWebElement _totalProductInBasket => Driver.FindElement(By.CssSelector(".total-items"));
-        private IWebElement _productPriceInBasket => Driver.FindElement(By.XPath("//form[@id='basket_form']/table/tbody/tr/td/table/tbody/tr/td/span/p/span[2]"));
-        private IWebElement _buttonIncrease => Driver.FindElement(By.XPath("//form[@id='basket_form']/table/tbody/tr/td/table/tbody/tr/td/div/span/button[2]"));
-        //basket_voucher template_basket_row group
-        private IWebElement _scrollMouseToVoucher => Driver.FindElement(By.CssSelector(".del"));
+        private IWebElement _productPriceInBasket => Driver.FindElement(By.XPath("//form[@id='basket_form']/table/tbody/tr/td/table/tbody/tr/td[2]/span"));
+        private IWebElement _oneProductPriceInBasket => Driver.FindElement(By.XPath("//form[@id='basket_form']/table/tbody/tr/td/table/tbody/tr/td/span/p/span[2]"));
+        private IWebElement _buttonIncrease => Driver.FindElement(By.CssSelector("#basket_form > table > tbody > tr > td > table > tbody > tr > td.basket-item > div > span > button.increment"));
+        private IWebElement _messageClose => Driver.FindElement(By.CssSelector("#monetate_allinone_lightbox > table > tbody > tr > td > span > img"));
+
         IReadOnlyCollection<IWebElement> womenClothingCollection => Driver.FindElements(By.CssSelector(".product-item"));
-        IReadOnlyCollection<IWebElement> productsCountCollection => Driver.FindElements(By.CssSelector(".basket_data basket_loading_off"));
         IReadOnlyCollection<IWebElement> allProductInBasket => Driver.FindElements(By.XPath("//span[@class = 'basket_item_text']"));
-        IReadOnlyCollection<IWebElement> allProductPrice = Driver.FindElements(By.XPath("//article"));
-        IReadOnlyCollection<IWebElement> allProductPriceInBasket = Driver.FindElements(By.XPath("//tr[@class = 'basket_border']"));
 
         public BasketPage(IWebDriver webDriver) : base(webDriver) { }
 
@@ -47,17 +42,6 @@ namespace FinalProject.Page
         //                             CHECK TOTAL PRICE IN THE BASKET
         //========================================================================
 
-        public void StandardDeliveryCheckBox(bool standardDelivery)
-        {
-            if (standardDelivery != _standardDeliveryCheckBox.Selected)
-                _standardDeliveryCheckBox.Click();
-        }
-
-        public void NextDayDeliveryCheckBox(bool nextDayDelivery)
-        {
-            if (nextDayDelivery != _nextDayDeliveryCheckBox.Selected)
-                _nextDayDeliveryCheckBox.Click();
-        }
         public double ConvertTotalPriceInBasket()
         {
             string totalPriceInString = _totalPriceInBasket.Text;
@@ -71,14 +55,10 @@ namespace FinalProject.Page
             return standardDeliveryPrice;
         }
 
-        public double ConvertNextDayDeliveryPrice()
-        {
-            double nextDayDeliveryPrice = WomenClothingPage.ConvertFromStringToDouble(_nextDayDeliveryPrice.Text);
-            return nextDayDeliveryPrice;
-        }
-
         public void AddProductToTheBasket()
         {
+            MessageBoxShow();
+            Thread.Sleep(500);
             SelectProduct();
             MouseScrollDownPage(_addToBasketButton);
             SelectSize();
@@ -116,43 +96,6 @@ namespace FinalProject.Page
             Assert.AreEqual(calculatedTotalPrice, totalPriceInBasket, $"The total amount varies. As suskaiciuoju {calculatedTotalPrice}" +
                                                                       $" is basketo pareina {totalPriceInBasket}");
         }
-        //public void CheckTotalPrice(bool standardDelivery, bool nextDayDelivery)
-        //{
-        //    if (standardDelivery && !nextDayDelivery)
-        //    {
-        //        StandardDeliveryCheckBox(standardDelivery);
-
-        //        double calculatedTotalPrice = CountTotalPriceInBasket() + ConvertStandardDeliveryPrice();
-        //        double totalPriceInBasket = ConvertTotalPriceInBasket();
-
-
-        //        Assert.AreEqual(calculatedTotalPrice, totalPriceInBasket, $"The total amount varies. As suskaiciuoju {calculatedTotalPrice}" +
-        //                                                                  $" is basketo pareina {totalPriceInBasket}");
-        //    }
-        //    else if (nextDayDelivery && !standardDelivery)
-        //    {
-        //        NextDayDeliveryCheckBox(nextDayDelivery);
-
-        //        double calculatedTotalPrice = CountTotalPriceInBasket() + ConvertNextDayDeliveryPrice();
-        //        double totalPriceInBasket = ConvertTotalPriceInBasket();
-
-
-        //        Assert.AreEqual(calculatedTotalPrice, totalPriceInBasket, $"the total amount varies. As suskaiciuoju {calculatedTotalPrice}" +
-        //                                                                  $" is basketo pareina {totalPriceInBasket}");
-        //    }
-        //    else if (!standardDelivery && !nextDayDelivery)
-        //    {
-        //        double calculatedTotalPrice = CountTotalPriceInBasket();
-        //        double totalPriceInBasket = ConvertTotalPriceInBasket();
-
-
-        //        Assert.AreEqual(calculatedTotalPrice, totalPriceInBasket, $"the total amount varies. As suskaiciuoju {calculatedTotalPrice}" +
-        //                                                                  $" is basketo pareina {totalPriceInBasket}");
-        //    }
-
-        //
-
-
 
         //========================================================================
         //                 Checking product quantities in the basket
@@ -181,16 +124,16 @@ namespace FinalProject.Page
             GetWait(10);
             for (int i = 0; i < howMuchIncrease - 1; i++)
             {
+                Thread.Sleep(1000);
                 MouseScrollDownPage(_buttonIncrease);
                 Increase();
-                GetWait(10);
-                //MouseScrollDownPage(_totalProductInBasket);
                 Driver.SwitchTo();
-            }                 
+            }
         }
 
         public void CheckProductCountInBasketAfterIncrease(int howMuchIncrease)
         {
+            MessageBoxShow();
             AddProductsInBasketAndIncrease(howMuchIncrease);
             MouseScrollDownPage(_totalProductInBasket);
             CheckProductCountInBasket();
@@ -202,21 +145,16 @@ namespace FinalProject.Page
 
         public void CheckProductPriceInBasketAfterIncrease(int howMuchIncrease)
         {
+            MessageBoxShow();
             AddProductsInBasketAndIncrease(howMuchIncrease);
-            Console.WriteLine("+++++++++++++++++++++++++");
-            MouseScrollDownPage(_totalProductInBasket);
-            
-            Console.WriteLine(_productPriceInBasket.Text);
-            double productPriceInBasket = WomenClothingPage.ConvertFromStringToDouble(_productPriceInBasket.Text);
+            Thread.Sleep(2000);
 
-            Console.WriteLine(productPriceInBasket);
-            Console.WriteLine(howMuchIncrease);
+            double oneproductPriceInBasketConver = WomenClothingPage.ConvertFromStringToDouble(_oneProductPriceInBasket.Text);
+            double productPriceInBasketConver = WomenClothingPage.ConvertFromStringToDouble(_productPriceInBasket.Text);
 
-            double sum = productPriceInBasket * howMuchIncrease;
-            
-            MouseScrollDownPage(_scrollMouseToVoucher);
-            //Driver.SwitchTo();
-            Assert.AreEqual(sum, productPriceInBasket, $"Price isn't correct. as suskaiciuoju {sum}");
+            double sum = oneproductPriceInBasketConver * howMuchIncrease;
+
+            Assert.AreEqual(sum, productPriceInBasketConver, $"Price isn't correct. as suskaiciuoju {sum}");
         }
 
 

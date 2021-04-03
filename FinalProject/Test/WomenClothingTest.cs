@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FinalProject.Test 
@@ -47,8 +48,10 @@ namespace FinalProject.Test
         {
             womenClothingPage.NavigateToDafaultPage();
             //var brand = brands.Split(',').ToList();
+            
             womenClothingPage.ClickOnSelectedBrand(brand);
-            womenClothingPage.NavigateToNewPage(brand);
+            Thread.Sleep(2000);
+           // womenClothingPage.NavigateToNewPage(brand);
             womenClothingPage.CheckOrInNewPageAreSelectedBrand(brand);
         }
 

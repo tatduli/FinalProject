@@ -20,8 +20,6 @@ namespace FinalProject.Test
         public static WomenClothingPage womenClothingPage;
         public static SocialNetworksPage socialNetworksPage;
         public static BasketPage basketPage;
-        //public static WomenClothingAndBasketPage naujas;
-       
 
         [OneTimeSetUp]
         public static void SetUp()
@@ -32,8 +30,7 @@ namespace FinalProject.Test
             womenClothingPage = new WomenClothingPage(driver);
             socialNetworksPage = new SocialNetworksPage(driver);
             basketPage = new BasketPage(driver);
-            //naujas = new WomenClothingAndBasketPage(driver);      
-           // driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
 
@@ -49,5 +46,6 @@ namespace FinalProject.Test
         {
             //driver.Quit();
         }
+
     }
 }
