@@ -19,26 +19,26 @@ namespace FinalProject.Page
         private SelectElement _sortByDropDown => new SelectElement(Driver.FindElement(By.Id("productlist_sort_by_top")));
         private IWebElement _addToBasketButton => Driver.FindElement(By.XPath("//input[@type = 'submit']"));
         private IWebElement _allProducstSize => Driver.FindElement(By.XPath("//ul[@class = 'attribute_value_list group']"));
-        private IWebElement _selectedSize => Driver.FindElement(By.CssSelector(".selected-size"));          
+        private IWebElement _selectedSize => Driver.FindElement(By.CssSelector(".selected-size"));
         private IWebElement _allProductBrand => Driver.FindElement(By.XPath("//ul[@class = 'facet-list brand_list filter_container ac_filter_static template_nav_filter_overflow']"));
-        private IWebElement _scrollMouseToSize => Driver.FindElement(By.CssSelector(".facet_size:nth-child(5) .no-ajax"));               
+        private IWebElement _scrollMouseToSize => Driver.FindElement(By.CssSelector(".facet_size:nth-child(5) .no-ajax"));
         private IWebElement _sortByField => Driver.FindElement(By.Id("productlist_sort_by_top"));
         private IWebElement _priceSlider => Driver.FindElement(By.Id("price-slider"));
         private IWebElement _scrollMouseToReview => Driver.FindElement(By.XPath("//nav/div[11]/h3/span"));
         private IWebElement _rightSlider => Driver.FindElement(By.XPath("//div[@id='price-slider']/div/div[3]/div"));
         private IWebElement _leftSlider => Driver.FindElement(By.XPath("//div[@id='price-slider']/div/div/div"));
         private IWebElement _priceMaxSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(8) .price_max"));
-        private IWebElement _priceMinSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(8) .price_min"));      
+        private IWebElement _priceMinSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(8) .price_min"));
 
-        List<IWebElement> productList;        
-        List<IWebElement> sizeList;       
+        List<IWebElement> productList;
+        List<IWebElement> sizeList;
 
         /// <summary>
         /// Konstruktorius
         /// </summary>
         /// <param name="webDriver"></param>
-        public WomenClothingPage(IWebDriver webDriver) : base(webDriver) { }        
-               
+        public WomenClothingPage(IWebDriver webDriver) : base(webDriver) { }
+
         public WomenClothingPage NavigateToDafaultPage()
         {
             if (Driver.Url != UrlAddress)
@@ -49,26 +49,26 @@ namespace FinalProject.Page
         //========================================================================
         //                             TEST SIZE
         //========================================================================
-       
+
         /// <summary>
         /// pasirenka atsitiktinį produktą ir grąžina jo kainos ir išrinkto produkto pavadinimo indeksus
         /// </summary>
         /// <returns></returns>
         public (int, int) SelectAndReturnIndexProductNameAndIndexSize()
         {
-            productList = new List<IWebElement>(womenClothingCollection);            
+            productList = new List<IWebElement>(womenClothingCollection);
 
             int productIndex = RandomProduct(productList);
             ClickOnRandomProduct(productIndex, productList);
-           
+
             MouseScrollDownPage(_addToBasketButton);//nuleidžiu puslapį iki mygtuko
 
             IReadOnlyCollection<IWebElement> productSizeCollection = _allProducstSize.FindElements(By.TagName("li"));
             sizeList = new List<IWebElement>(productSizeCollection);
-            int sizeIndex = RandomProductSize(_allProducstSize);                    
-            ClickOnRandomProductSize(sizeIndex, sizeList);   
-            
-            return (productIndex, sizeIndex);               
+            int sizeIndex = RandomProductSize(_allProducstSize);
+            ClickOnRandomProductSize(sizeIndex, sizeList);
+
+            return (productIndex, sizeIndex);
         }
 
         /// <summary>
@@ -78,8 +78,8 @@ namespace FinalProject.Page
         {
             (int, int) randomProduct = SelectAndReturnIndexProductNameAndIndexSize();
             int sizeIndex = randomProduct.Item2;
-            
-            Assert.AreEqual(_selectedSize.Text, sizeList[sizeIndex].Text, 
+
+            Assert.AreEqual(_selectedSize.Text, sizeList[sizeIndex].Text,
                            ($"Size isn't the same. The size chosen was " +
                            $"{sizeList[sizeIndex].Text}, and the recorded size was {_selectedSize.Text}"));
         }
@@ -87,42 +87,48 @@ namespace FinalProject.Page
         //========================================================================
         //                             SELECT BRAND AND CHECK SIDE
         //========================================================================
-        // NESIGAUNA - Išrinkti kelis brendus ir patikrinti puslapį
-        public void ClickOnSelectedBrand(string brand)
+    
+        public void ClickOnSelectedBrand(List<string> brand)
         {
             MessageBoxShow();
             var productBrandCollection = _allProductBrand.FindElements(By.XPath("//nav/div[3]/div/ul/li/a"));
-            
+
             MouseScrollDownPage(_scrollMouseToSize);
-           
+
             for (int i = 0; i < productBrandCollection.Count; i++)
-            {                
-                if (productBrandCollection[i].Text.ToLower().Contains(brand))               
-                {                    
-                    MouseScrollDownPage(_scrollMouseToSize);                   
-                    productBrandCollection[i].Click();                    
-                }                
-            }          
+            {
+                foreach (string item in brand)
+                {
+                    if (productBrandCollection[i].Text.ToLower().Contains(item))
+                    {
+                        MouseScrollDownPage(_scrollMouseToSize);
+                        productBrandCollection[i].Click();
+                    }
+                }
+            }
         }
 
-        public void NavigateToNewPage(string brand)           
+        public void NavigateToNewPage(string brand)
         {
             string urlAddress = "https://www.blacks.co.uk/womens/womens-clothing/";
             string newUrlAddress = urlAddress + "br:" + brand;
             Driver.Navigate().GoToUrl(newUrlAddress);
         }
 
-        public void CheckOrInNewPageAreSelectedBrand(string brand)
+        public void CheckOrInNewPageAreSelectedBrand(List<string> brands)
         {
-            productList = new List<IWebElement>(womenClothingCollection);
+            productList = new List<IWebElement>(womenClothingCollection);           
+           
             for (int i = 0; i < productList.Count; i++)
             {
-                string brandNameOneItem = Driver.FindElement(By.CssSelector(".product-item:nth-child(2) .brand")).Text;              
-
-                Assert.IsTrue(brand.ToLower().Contains( brandNameOneItem.ToLower()));
-            }           
+                string brandNameOneItem = Driver.FindElement(By.CssSelector(".product-item:nth-child(2) .brand")).Text;
+               
+                if (!brands.Contains(brandNameOneItem.ToLower()))
+                    Assert.IsFalse(true,"Somthing wrong on page");              
+            }
+            Assert.IsTrue(true);           
         }
-        
+
         //========================================================================
         //                             SORT TEST
         //========================================================================
@@ -144,8 +150,8 @@ namespace FinalProject.Page
             for (int i = 0; i < optionsList.Count; i++)
             {
                 if (optionsList[i].Text.Contains(sortedBy))
-                {                    
-                    optionsList[i].Click();                   
+                {
+                    optionsList[i].Click();
                     break;
                 }
             }
@@ -161,7 +167,7 @@ namespace FinalProject.Page
             List<double> newSortedWomenClothingListByPrice = NewListByPrice();
             GetWait().Until(ExpectedConditions.ElementToBeClickable(_sortByField));// manau nereik
             ClickOnSortBy();
-            SelectedSortByDropDown(mySelectBy);            
+            SelectedSortByDropDown(mySelectBy);
             return newSortedWomenClothingListByPrice;
         }
 
@@ -171,9 +177,9 @@ namespace FinalProject.Page
         /// <returns></returns>
         public List<double> MySortedWomenClothingListByPriceAscending()
         {
-            List<double> mySortedWomenClothingListByPrice = NewListByPrice();            
+            List<double> mySortedWomenClothingListByPrice = NewListByPrice();
 
-            mySortedWomenClothingListByPrice.Sort();                       
+            mySortedWomenClothingListByPrice.Sort();
             return mySortedWomenClothingListByPrice;
         }
 
@@ -183,20 +189,20 @@ namespace FinalProject.Page
         /// <param name="mySelectBy">pagal ką rikiuosiu</param>
         /// <param name="sortAscOrDsc">Kokia tvarka rikiuosiu</param>
         public void CompareTwoSortedListsByPrice(Enum mySelectBy, string sortAscOrDsc)
-        {            
+        {
             List<double> newSortedWomenClothingListByPrice = SelectedSortByDropDownAndReturnNewSortedList(mySelectBy);
             List<double> mySortedWomenClothingListByPrice = MySortedWomenClothingListByPriceAscending();
-           
+
             if (sortAscOrDsc == "Asc")
-            {                
+            {
                 Assert.AreEqual(newSortedWomenClothingListByPrice, mySortedWomenClothingListByPrice, "The products are badly sorted");
-                
+
             }
             if (sortAscOrDsc == "Dsc")
-            {                
+            {
                 mySortedWomenClothingListByPrice.Reverse();
                 Assert.AreEqual(newSortedWomenClothingListByPrice, mySortedWomenClothingListByPrice, "The products are badly sorted");
-            }      
+            }
         }
 
         /// <summary>
@@ -215,28 +221,28 @@ namespace FinalProject.Page
         //========================================================================
         //                            TEST PRICE SLIDER
         //========================================================================
- 
+
         public void MoveSliderWantedRange(int minPrice, int maxPrice)
-        {            
-            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);            
+        {
+            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);
             double converPriceMinSlider = Convert.ToDouble(_priceMinSlider.Text);
-            
+
             MouseScrollDownPage(_scrollMouseToReview);
-           
-            (double, double) offset = ConvertSliderMinPriceAndMaxPriceToPixselOffset(minPrice, maxPrice, 
+
+            (double, double) offset = ConvertSliderMinPriceAndMaxPriceToPixselOffset(minPrice, maxPrice,
                                                                                      converPriceMaxSlider, converPriceMinSlider);
-           
+
             if (minPrice >= converPriceMinSlider)
             {
                 MoveLeft((int)offset.Item1);
                 Thread.Sleep(1000);
-            }              
-            
+            }
+
             if (maxPrice <= converPriceMaxSlider)
             {
                 MoveRight((int)offset.Item2);
                 Thread.Sleep(1000);
-            }              
+            }
         }
 
         public void MoveLeft(int minPrice)
@@ -250,13 +256,13 @@ namespace FinalProject.Page
             Actions move = new Actions(Driver);
             move.ClickAndHold(_rightSlider).MoveByOffset((int)-maxPrice, 0).Release().Perform();
         }
-        
+
         public void TestSliderPriceWithPagePrice(int minPrice, int maxPrice)
         {
             double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);
             Console.WriteLine(maxPrice);
             Console.WriteLine(converPriceMaxSlider);
-            if (maxPrice <= converPriceMaxSlider + 3  && maxPrice >= converPriceMaxSlider - 3)//pix paklaida
+            if (maxPrice <= converPriceMaxSlider + 3 && maxPrice >= converPriceMaxSlider - 3)//pix paklaida
             {
                 for (int i = 0; i < womenClothingCollection.Count - 1; i++)//
                 {
@@ -268,7 +274,7 @@ namespace FinalProject.Page
                 }
             }
             else
-                Assert.True(maxPrice <= converPriceMaxSlider + 3 && maxPrice >= converPriceMaxSlider - 3, "Slider don't move or don't fix");         
+                Assert.True(maxPrice <= converPriceMaxSlider + 3 && maxPrice >= converPriceMaxSlider - 3, "Slider don't move or don't fix");
         }
         //===========================================================================================
 
@@ -307,16 +313,16 @@ namespace FinalProject.Page
             for (int i = 0; i < womenClothingCollection.Count - 1; i++)//
             {
                 string priceSelectedItem = Driver.FindElement(By.XPath("//article[(" + (i + 1).ToString() + ")]/div/a/span/span")).Text;   //kaina             
-                priceList.Add(ConvertFromStringToDouble(priceSelectedItem));               
+                priceList.Add(ConvertFromStringToDouble(priceSelectedItem));
             }
             return priceList;
         }
 
         private (double, double) ConvertSliderMinPriceAndMaxPriceToPixselOffset(int minPrice, int maxPrice,
                                                                                 double converPriceMaxSlider, double converPriceMinSlider)
-        {            
-            double sliderWidth = Convert.ToDouble(_priceSlider.Size.Width);            
-            
+        {
+            double sliderWidth = Convert.ToDouble(_priceSlider.Size.Width);
+
             double offsetMin = (float)sliderWidth * (minPrice / converPriceMaxSlider);
 
             double offsetMax = (float)sliderWidth * ((converPriceMaxSlider - maxPrice) / converPriceMaxSlider);
@@ -325,7 +331,7 @@ namespace FinalProject.Page
             return (offsetMin, offsetMax);
         }
 
-        
+
         /// <summary>
         /// sukuriamas naujas sąrašas atsižvelgiat į prekės aprašą
         /// </summary>
@@ -337,7 +343,7 @@ namespace FinalProject.Page
             for (int i = 0; i < womenClothingCollection.Count - 1; i++)//
             {
                 string descriptionSelectedItem = Driver.FindElement(By.XPath("//article[(" + (i + 1).ToString() + ")]/div/a/span/h2/span[2]")).Text;   //teksta             
-                alphabetList.Add(descriptionSelectedItem);                
+                alphabetList.Add(descriptionSelectedItem);
             }
             return alphabetList;
         }

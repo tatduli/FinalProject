@@ -42,16 +42,14 @@ namespace FinalProject.Test
             womenClothingPage.CheckSortedListsByAlphabet(sortAscOrDsc);
         }
 
-        [TestCase("whitaker", TestName = "Test brand WHITAKER")]
-        [TestCase("merrell", TestName = "Test brand MERRELL")]
-        public void TestOrSelectedBrandLoadInPage(string brand)
+        [TestCase("brasher,whitaker", TestName = "Test 2 brand")]
+        [TestCase("merrell,eurohike,columbia", TestName = "Test 3 brand")]
+        public void TestOrSelectedBrandLoadInPage(string brands)
         {
-            womenClothingPage.NavigateToDafaultPage();
-            //var brand = brands.Split(',').ToList();
-            
+            womenClothingPage.NavigateToDafaultPage();            
+            List<string> brand = brands.Split(',').ToList();
             womenClothingPage.ClickOnSelectedBrand(brand);
-            Thread.Sleep(2000);
-           // womenClothingPage.NavigateToNewPage(brand);
+            Thread.Sleep(2000);           
             womenClothingPage.CheckOrInNewPageAreSelectedBrand(brand);
         }
 
