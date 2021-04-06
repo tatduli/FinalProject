@@ -24,15 +24,15 @@ namespace FinalProject.Test
         [OneTimeSetUp]
         public static void SetUp()
         {
-            driver = CustomDriver.GetChromeDriver();
+            driver = CustomDriver.GetIncognitoChrome();
             blacksCoUkPage = new BlacksCoUkDefaultPage(driver);
             oneProductPage = new OneProductPage(driver);
             womenClothingPage = new WomenClothingPage(driver);
             socialNetworksPage = new SocialNetworksPage(driver);
             basketPage = new BasketPage(driver);
+            driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
-
 
         [TearDown]
         public static void TakeScreenshot()
@@ -46,6 +46,5 @@ namespace FinalProject.Test
         {
             //driver.Quit();
         }
-
     }
 }

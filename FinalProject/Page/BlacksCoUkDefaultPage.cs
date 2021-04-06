@@ -144,15 +144,13 @@ namespace FinalProject.Page
                             if(_popupWindows.Text.Contains("The entered email address is not valid"))
                             {
                                 _popupWindowsClose.Click();
-                            }
-                            //writeText.WriteLine($"{email} is bad, test result is good");
+                            }                           
                             writeText.WriteLine("| {0, -45} | {1, -10}   | {2, -10} |", email, "Invalid", "Passed");                            
                         }
                         else
                         {
                             _popupWindowsClose.Click();
-                            emailBool = false;
-                            // writeText.WriteLine($"{email} is bad, test result is bad");
+                            emailBool = false;                            
                             writeText.WriteLine("| {0, -45} | {1, -10}   | {2, -10} |", email, "Invalid", "Failed");
                         }
 
@@ -164,13 +162,5 @@ namespace FinalProject.Page
                     Console.WriteLine("Data file does not exist");
             }          
         }
-
-        //public void CheckBrandResultThroughTheSearchField()
-        //{ IWebElement blockA = Driver.FindElement(By.Id("brands_A"));
-        //ICollection<IWebElement> list = blockA.FindElements(By.TagName("li"));
-        //    Assert.AreEqual(Driver.Url, BrandsUrlAddress, "Address isn't corect");
-
-        //}
-
     }
 }

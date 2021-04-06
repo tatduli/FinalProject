@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +25,7 @@ namespace FinalProject.Page
         private IWebElement _productPriceInBasket => Driver.FindElement(By.XPath("//form[@id='basket_form']/table/tbody/tr/td/table/tbody/tr/td[2]/span"));
         private IWebElement _oneProductPriceInBasket => Driver.FindElement(By.XPath("//form[@id='basket_form']/table/tbody/tr/td/table/tbody/tr/td/span/p/span[2]"));
         private IWebElement _buttonIncrease => Driver.FindElement(By.CssSelector("#basket_form > table > tbody > tr > td > table > tbody > tr > td.basket-item > div > span > button.increment"));
-        private IWebElement _messageClose => Driver.FindElement(By.CssSelector("#monetate_allinone_lightbox > table > tbody > tr > td > span > img"));
-
+       
         IReadOnlyCollection<IWebElement> womenClothingCollection => Driver.FindElements(By.CssSelector(".product-item"));
         IReadOnlyCollection<IWebElement> allProductInBasket => Driver.FindElements(By.XPath("//span[@class = 'basket_item_text']"));
 
@@ -58,6 +58,7 @@ namespace FinalProject.Page
         public void AddProductToTheBasket()
         {
             MessageBoxShow();
+           // GetWait(5); neveikia
             Thread.Sleep(500);
             SelectProduct();
             MouseScrollDownPage(_addToBasketButton);
@@ -124,7 +125,7 @@ namespace FinalProject.Page
             GetWait(10);
             for (int i = 0; i < howMuchIncrease - 1; i++)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(1000);//GetWait neveikė
                 MouseScrollDownPage(_buttonIncrease);
                 Increase();
                 Driver.SwitchTo();
@@ -147,12 +148,11 @@ namespace FinalProject.Page
         {
             MessageBoxShow();
             AddProductsInBasketAndIncrease(howMuchIncrease);
-            Thread.Sleep(2000);
-
-            double oneproductPriceInBasketConver = WomenClothingPage.ConvertFromStringToDouble(_oneProductPriceInBasket.Text);
+            Thread.Sleep(1000);
+            double oneProductPriceInBasketConver = WomenClothingPage.ConvertFromStringToDouble(_oneProductPriceInBasket.Text);
             double productPriceInBasketConver = WomenClothingPage.ConvertFromStringToDouble(_productPriceInBasket.Text);
 
-            double sum = oneproductPriceInBasketConver * howMuchIncrease;
+            double sum = oneProductPriceInBasketConver * howMuchIncrease;
 
             Assert.AreEqual(sum, productPriceInBasketConver, $"Price isn't correct. as suskaiciuoju {sum}");
         }
@@ -211,6 +211,5 @@ namespace FinalProject.Page
             }
             return sum;
         }
-
     }
 }

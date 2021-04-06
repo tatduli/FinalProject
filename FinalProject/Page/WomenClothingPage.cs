@@ -196,7 +196,6 @@ namespace FinalProject.Page
             if (sortAscOrDsc == "Asc")
             {
                 Assert.AreEqual(newSortedWomenClothingListByPrice, mySortedWomenClothingListByPrice, "The products are badly sorted");
-
             }
             if (sortAscOrDsc == "Dsc")
             {

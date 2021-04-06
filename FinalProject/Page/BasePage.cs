@@ -13,7 +13,6 @@ namespace FinalProject.Page
     {
         protected static IWebDriver Driver;
 
-
         public BasePage(IWebDriver webDriver)
         {
             Driver = webDriver;
@@ -95,6 +94,5 @@ namespace FinalProject.Page
         {
             Driver.Quit();
         }
-
     }
 }
