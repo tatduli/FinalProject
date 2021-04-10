@@ -21,14 +21,14 @@ namespace FinalProject.Page
         private IWebElement _allProducstSize => Driver.FindElement(By.XPath("//ul[@class = 'attribute_value_list group']"));
         private IWebElement _selectedSize => Driver.FindElement(By.CssSelector(".selected-size"));
         private IWebElement _allProductBrand => Driver.FindElement(By.XPath("//ul[@class = 'facet-list brand_list filter_container ac_filter_static template_nav_filter_overflow']"));
-        private IWebElement _scrollMouseToSize => Driver.FindElement(By.CssSelector(".facet_size:nth-child(5) .no-ajax"));
+        private IWebElement _scrollMouseToSize => Driver.FindElement(By.CssSelector(".facet_size:nth-child(5) .no-ajax"));        
         private IWebElement _sortByField => Driver.FindElement(By.Id("productlist_sort_by_top"));
         private IWebElement _priceSlider => Driver.FindElement(By.Id("price-slider"));
-        private IWebElement _scrollMouseToReview => Driver.FindElement(By.XPath("//nav/div[11]/h3/span"));
+        private IWebElement _scrollMouseToReview => Driver.FindElement(By.XPath("//nav/div[11]/h3/span"));       
         private IWebElement _rightSlider => Driver.FindElement(By.XPath("//div[@id='price-slider']/div/div[3]/div"));
         private IWebElement _leftSlider => Driver.FindElement(By.XPath("//div[@id='price-slider']/div/div/div"));
-        private IWebElement _priceMaxSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(8) .price_max"));
-        private IWebElement _priceMinSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(8) .price_min"));
+        private IWebElement _priceMaxSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(10) .price_max"));        
+        private IWebElement _priceMinSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(10) .price_min"));
 
         List<IWebElement> productList;
         List<IWebElement> sizeList;
@@ -90,7 +90,7 @@ namespace FinalProject.Page
     
         public void ClickOnSelectedBrand(List<string> brand)
         {
-            MessageBoxShow();
+            //MessageBoxShow();
             var productBrandCollection = _allProductBrand.FindElements(By.XPath("//nav/div[3]/div/ul/li/a"));
 
             MouseScrollDownPage(_scrollMouseToSize);
@@ -223,10 +223,9 @@ namespace FinalProject.Page
 
         public void MoveSliderWantedRange(int minPrice, int maxPrice)
         {
-            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);
+            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);           
             double converPriceMinSlider = Convert.ToDouble(_priceMinSlider.Text);
-
-            MouseScrollDownPage(_scrollMouseToReview);
+            MouseScrollDownPage(_scrollMouseToReview);            
 
             (double, double) offset = ConvertSliderMinPriceAndMaxPriceToPixselOffset(minPrice, maxPrice,
                                                                                      converPriceMaxSlider, converPriceMinSlider);

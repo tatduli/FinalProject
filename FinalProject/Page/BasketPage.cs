@@ -57,7 +57,7 @@ namespace FinalProject.Page
 
         public void AddProductToTheBasket()
         {
-            MessageBoxShow();
+           // MessageBoxShow();
            // GetWait(5); neveikia
             Thread.Sleep(500);
             SelectProduct();
@@ -134,7 +134,7 @@ namespace FinalProject.Page
 
         public void CheckProductCountInBasketAfterIncrease(int howMuchIncrease)
         {
-            MessageBoxShow();
+            //MessageBoxShow();
             AddProductsInBasketAndIncrease(howMuchIncrease);
             MouseScrollDownPage(_totalProductInBasket);
             CheckProductCountInBasket();
@@ -146,7 +146,7 @@ namespace FinalProject.Page
 
         public void CheckProductPriceInBasketAfterIncrease(int howMuchIncrease)
         {
-            MessageBoxShow();
+            //MessageBoxShow();
             AddProductsInBasketAndIncrease(howMuchIncrease);
             Thread.Sleep(1000);
             double oneProductPriceInBasketConver = WomenClothingPage.ConvertFromStringToDouble(_oneProductPriceInBasket.Text);
