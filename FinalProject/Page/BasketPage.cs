@@ -1,12 +1,8 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace FinalProject.Page
 {
@@ -25,9 +21,9 @@ namespace FinalProject.Page
         private IWebElement _productPriceInBasket => Driver.FindElement(By.XPath("//form[@id='basket_form']/table/tbody/tr/td/table/tbody/tr/td[2]/span"));
         private IWebElement _oneProductPriceInBasket => Driver.FindElement(By.XPath("//form[@id='basket_form']/table/tbody/tr/td/table/tbody/tr/td/span/p/span[2]"));
         private IWebElement _buttonIncrease => Driver.FindElement(By.CssSelector("#basket_form > table > tbody > tr > td > table > tbody > tr > td.basket-item > div > span > button.increment"));
-       
-        IReadOnlyCollection<IWebElement> womenClothingCollection => Driver.FindElements(By.CssSelector(".product-item"));
-        IReadOnlyCollection<IWebElement> allProductInBasket => Driver.FindElements(By.XPath("//span[@class = 'basket_item_text']"));
+
+        private IReadOnlyCollection<IWebElement> womenClothingCollection => Driver.FindElements(By.CssSelector(".product-item"));
+        private IReadOnlyCollection<IWebElement> allProductInBasket => Driver.FindElements(By.XPath("//span[@class = 'basket_item_text']"));
 
         public BasketPage(IWebDriver webDriver) : base(webDriver) { }
 
@@ -42,23 +38,9 @@ namespace FinalProject.Page
         //                             CHECK TOTAL PRICE IN THE BASKET
         //========================================================================
 
-        public double ConvertTotalPriceInBasket()
-        {
-            string totalPriceInString = _totalPriceInBasket.Text;
-            double totalPriceInDouble = WomenClothingPage.ConvertFromStringToDouble(totalPriceInString);
-            return totalPriceInDouble;
-        }
-
-        public double ConvertStandardDeliveryPrice()
-        {
-            double standardDeliveryPrice = WomenClothingPage.ConvertFromStringToDouble(_standardDeliveryPrice.Text);
-            return standardDeliveryPrice;
-        }
-
         public void AddProductToTheBasket()
         {
-           // MessageBoxShow();
-           // GetWait(5); neveikia
+            // MessageBoxShow();
             Thread.Sleep(500);
             SelectProduct();
             MouseScrollDownPage(_addToBasketButton);
@@ -73,7 +55,7 @@ namespace FinalProject.Page
         /// <summary>
         /// Suskaičiuoja krepšialyje esančių prekių bendrą sumą
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Grąžina prekių bendrą kainą</returns>
         public double CountTotalPriceInBasket()
         {
             IReadOnlyCollection<IWebElement> allProductPriceInBasket = Driver.FindElements(By.XPath("//tr[@class = 'basket_border']"));// kai iškeliu į išorę vienu mažiau krepšelyje būna
@@ -122,10 +104,11 @@ namespace FinalProject.Page
             SelectSize();
             AddToBasket();
             ViewBasket();
+
             GetWait(10);
             for (int i = 0; i < howMuchIncrease - 1; i++)
             {
-                Thread.Sleep(1000);//GetWait neveikė
+                Thread.Sleep(1000);
                 MouseScrollDownPage(_buttonIncrease);
                 Increase();
                 Driver.SwitchTo();
@@ -156,7 +139,6 @@ namespace FinalProject.Page
 
             Assert.AreEqual(sum, productPriceInBasketConver, $"Price isn't correct. as suskaiciuoju {sum}");
         }
-
 
         public void Increase()
         {
@@ -210,6 +192,19 @@ namespace FinalProject.Page
                 sum += convertQuantityOfOneProduct;
             }
             return sum;
+        }
+
+        private double ConvertTotalPriceInBasket()
+        {
+            string totalPriceInString = _totalPriceInBasket.Text;
+            double totalPriceInDouble = WomenClothingPage.ConvertFromStringToDouble(totalPriceInString);
+            return totalPriceInDouble;
+        }
+
+        private double ConvertStandardDeliveryPrice()
+        {
+            double standardDeliveryPrice = WomenClothingPage.ConvertFromStringToDouble(_standardDeliveryPrice.Text);
+            return standardDeliveryPrice;
         }
     }
 }

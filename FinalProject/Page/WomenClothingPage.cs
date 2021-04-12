@@ -4,10 +4,7 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace FinalProject.Page
 {
@@ -15,20 +12,20 @@ namespace FinalProject.Page
     {
         private const string UrlAddress = "https://www.blacks.co.uk/womens/womens-clothing/";
 
-        IReadOnlyCollection<IWebElement> womenClothingCollection => Driver.FindElements(By.CssSelector(".product-item"));
+        private IReadOnlyCollection<IWebElement> womenClothingCollection => Driver.FindElements(By.CssSelector(".product-item"));
         private SelectElement _sortByDropDown => new SelectElement(Driver.FindElement(By.Id("productlist_sort_by_top")));
         private IWebElement _addToBasketButton => Driver.FindElement(By.XPath("//input[@type = 'submit']"));
         private IWebElement _allProducstSize => Driver.FindElement(By.XPath("//ul[@class = 'attribute_value_list group']"));
         private IWebElement _selectedSize => Driver.FindElement(By.CssSelector(".selected-size"));
         private IWebElement _allProductBrand => Driver.FindElement(By.XPath("//ul[@class = 'facet-list brand_list filter_container ac_filter_static template_nav_filter_overflow']"));
-        private IWebElement _scrollMouseToSize => Driver.FindElement(By.CssSelector(".facet_size:nth-child(5) .no-ajax"));        
+        private IWebElement _scrollMouseToSize => Driver.FindElement(By.CssSelector(".facet_size:nth-child(5) .no-ajax"));
         private IWebElement _sortByField => Driver.FindElement(By.Id("productlist_sort_by_top"));
         private IWebElement _priceSlider => Driver.FindElement(By.Id("price-slider"));
-        private IWebElement _scrollMouseToReview => Driver.FindElement(By.XPath("//nav/div[11]/h3/span"));       
+        private IWebElement _scrollMouseToReview => Driver.FindElement(By.XPath("//nav/div[12]/h3/span"));
         private IWebElement _rightSlider => Driver.FindElement(By.XPath("//div[@id='price-slider']/div/div[3]/div"));
         private IWebElement _leftSlider => Driver.FindElement(By.XPath("//div[@id='price-slider']/div/div/div"));
-        private IWebElement _priceMaxSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(10) .price_max"));        
-        private IWebElement _priceMinSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(10) .price_min"));
+        private IWebElement _priceMaxSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(11) .price_max"));
+        private IWebElement _priceMinSlider => Driver.FindElement(By.CssSelector(".facet:nth-child(11) .price_min"));
 
         List<IWebElement> productList;
         List<IWebElement> sizeList;
@@ -51,27 +48,6 @@ namespace FinalProject.Page
         //========================================================================
 
         /// <summary>
-        /// pasirenka atsitiktinį produktą ir grąžina jo kainos ir išrinkto produkto pavadinimo indeksus
-        /// </summary>
-        /// <returns></returns>
-        public (int, int) SelectAndReturnIndexProductNameAndIndexSize()
-        {
-            productList = new List<IWebElement>(womenClothingCollection);
-
-            int productIndex = RandomProduct(productList);
-            ClickOnRandomProduct(productIndex, productList);
-
-            MouseScrollDownPage(_addToBasketButton);//nuleidžiu puslapį iki mygtuko
-
-            IReadOnlyCollection<IWebElement> productSizeCollection = _allProducstSize.FindElements(By.TagName("li"));
-            sizeList = new List<IWebElement>(productSizeCollection);
-            int sizeIndex = RandomProductSize(_allProducstSize);
-            ClickOnRandomProductSize(sizeIndex, sizeList);
-
-            return (productIndex, sizeIndex);
-        }
-
-        /// <summary>
         /// Tikrinu ar krepšelyje rodomas dydis toks pats kokį išrinko vartotojas
         /// </summary>
         public void CheckSelectedSize()
@@ -87,7 +63,7 @@ namespace FinalProject.Page
         //========================================================================
         //                             SELECT BRAND AND CHECK SIDE
         //========================================================================
-    
+
         public void ClickOnSelectedBrand(List<string> brand)
         {
             //MessageBoxShow();
@@ -108,34 +84,21 @@ namespace FinalProject.Page
             }
         }
 
-        public void NavigateToNewPage(string brand)
-        {
-            string urlAddress = "https://www.blacks.co.uk/womens/womens-clothing/";
-            string newUrlAddress = urlAddress + "br:" + brand;
-            Driver.Navigate().GoToUrl(newUrlAddress);
-        }
-
         public void CheckOrInNewPageAreSelectedBrand(List<string> brands)
         {
-            productList = new List<IWebElement>(womenClothingCollection);           
-           
+            productList = new List<IWebElement>(womenClothingCollection);
+
             for (int i = 0; i < productList.Count; i++)
             {
-                string brandNameOneItem = Driver.FindElement(By.CssSelector(".product-item:nth-child(2) .brand")).Text;
-               
-                if (!brands.Contains(brandNameOneItem.ToLower()))
-                    Assert.IsFalse(true,"Somthing wrong on page");              
+                string brandNameOneItem = Driver.FindElement(By.CssSelector(".product-item:nth-child(2) .brand")).Text.ToLower();
+
+                Assert.Contains(brandNameOneItem, brands, "Brands are not displayed correctly");
             }
-            Assert.IsTrue(true);           
         }
 
         //========================================================================
         //                             SORT TEST
         //========================================================================
-        public void ClickOnSortBy()
-        {
-            _sortByField.Click();
-        }
 
         /// <summary>
         /// Iš enum padaromas stringas ir iš dropbox išrenkamas norimas rikiavimas
@@ -165,16 +128,16 @@ namespace FinalProject.Page
         public List<double> SelectedSortByDropDownAndReturnNewSortedList(Enum mySelectBy)
         {
             List<double> newSortedWomenClothingListByPrice = NewListByPrice();
-            GetWait().Until(ExpectedConditions.ElementToBeClickable(_sortByField));// manau nereik
+            GetWait().Until(ExpectedConditions.ElementToBeClickable(_sortByField));
             ClickOnSortBy();
             SelectedSortByDropDown(mySelectBy);
             return newSortedWomenClothingListByPrice;
         }
 
         /// <summary>
-        /// Msukuriu naują sąrašą ir jį surikiuoju pagal kainą
+        /// sukuriu naują sąrašą ir jį surikiuoju pagal kainą
         /// </summary>
-        /// <returns></returns>
+        /// <returns>grąžina surikiuotą sąrašą pagal kainą</returns>
         public List<double> MySortedWomenClothingListByPriceAscending()
         {
             List<double> mySortedWomenClothingListByPrice = NewListByPrice();
@@ -193,11 +156,11 @@ namespace FinalProject.Page
             List<double> newSortedWomenClothingListByPrice = SelectedSortByDropDownAndReturnNewSortedList(mySelectBy);
             List<double> mySortedWomenClothingListByPrice = MySortedWomenClothingListByPriceAscending();
 
-            if (sortAscOrDsc == "Asc")
+            if (sortAscOrDsc.Equals("Asc"))
             {
                 Assert.AreEqual(newSortedWomenClothingListByPrice, mySortedWomenClothingListByPrice, "The products are badly sorted");
             }
-            if (sortAscOrDsc == "Dsc")
+            if (sortAscOrDsc.Equals("Dsc"))
             {
                 mySortedWomenClothingListByPrice.Reverse();
                 Assert.AreEqual(newSortedWomenClothingListByPrice, mySortedWomenClothingListByPrice, "The products are badly sorted");
@@ -211,9 +174,9 @@ namespace FinalProject.Page
         public void CheckSortedListsByAlphabet(string sortAscOrDsc)
         {
             List<string> newSortedWomenClothingListByAlphabet = NewListByAlphabet();
-            if (sortAscOrDsc == "Asc")
+            if (sortAscOrDsc.Equals("Asc"))
                 Assert.That(newSortedWomenClothingListByAlphabet, Is.Ordered, "The products are badly sorted");
-            if (sortAscOrDsc == "Dsc")
+            if (sortAscOrDsc.Equals("Dsc"))
                 Assert.That(newSortedWomenClothingListByAlphabet, Is.Ordered.Descending, "The products are badly sorted");
         }
 
@@ -223,9 +186,9 @@ namespace FinalProject.Page
 
         public void MoveSliderWantedRange(int minPrice, int maxPrice)
         {
-            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);           
+            double converPriceMaxSlider = Convert.ToDouble(_priceMaxSlider.Text);
             double converPriceMinSlider = Convert.ToDouble(_priceMinSlider.Text);
-            MouseScrollDownPage(_scrollMouseToReview);            
+            MouseScrollDownPage(_scrollMouseToReview);
 
             (double, double) offset = ConvertSliderMinPriceAndMaxPriceToPixselOffset(minPrice, maxPrice,
                                                                                      converPriceMaxSlider, converPriceMinSlider);
@@ -241,18 +204,6 @@ namespace FinalProject.Page
                 MoveRight((int)offset.Item2);
                 Thread.Sleep(1000);
             }
-        }
-
-        public void MoveLeft(int minPrice)
-        {
-            Actions move = new Actions(Driver);
-            move.ClickAndHold(_leftSlider).MoveByOffset((int)minPrice, 0).Release().Perform();
-        }
-
-        public void MoveRight(int maxPrice)
-        {
-            Actions move = new Actions(Driver);
-            move.ClickAndHold(_rightSlider).MoveByOffset((int)-maxPrice, 0).Release().Perform();
         }
 
         public void TestSliderPriceWithPagePrice(int minPrice, int maxPrice)
@@ -301,6 +252,32 @@ namespace FinalProject.Page
         //========================================================================
 
         /// <summary>
+        /// pasirenka atsitiktinį produktą ir grąžina jo dydžio ir išrinkto produkto pavadinimo indeksus
+        /// </summary>
+        /// <returns>Grąžina produkto ir dydžio indeksą</returns>
+        private (int, int) SelectAndReturnIndexProductNameAndIndexSize()
+        {
+            productList = new List<IWebElement>(womenClothingCollection);
+
+            int productIndex = RandomProduct(productList);
+            ClickOnRandomProduct(productIndex, productList);
+
+            MouseScrollDownPage(_addToBasketButton);//nuleidžiu puslapį iki mygtuko
+
+            IReadOnlyCollection<IWebElement> productSizeCollection = _allProducstSize.FindElements(By.TagName("li"));
+            sizeList = new List<IWebElement>(productSizeCollection);
+            int sizeIndex = RandomProductSize(_allProducstSize);
+            ClickOnRandomProductSize(sizeIndex, sizeList);
+
+            return (productIndex, sizeIndex);
+        }
+
+        private void ClickOnSortBy()
+        {
+            _sortByField.Click();
+        }
+
+        /// <summary>
         /// Sukuriamas naujas list'as iš kainų
         /// </summary>
         /// <returns>grąžiną naują list'ą</returns>
@@ -344,6 +321,18 @@ namespace FinalProject.Page
                 alphabetList.Add(descriptionSelectedItem);
             }
             return alphabetList;
+        }
+
+        private void MoveLeft(int minPrice)
+        {
+            Actions move = new Actions(Driver);
+            move.ClickAndHold(_leftSlider).MoveByOffset((int)minPrice, 0).Release().Perform();
+        }
+
+        private void MoveRight(int maxPrice)
+        {
+            Actions move = new Actions(Driver);
+            move.ClickAndHold(_rightSlider).MoveByOffset((int)-maxPrice, 0).Release().Perform();
         }
     }
 }

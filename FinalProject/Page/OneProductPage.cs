@@ -12,7 +12,7 @@ namespace FinalProject.Page
     {
         private const string UrlAddress = "https://www.blacks.co.uk/basket/";       
       
-        IReadOnlyCollection<IWebElement> findedProductList => Driver.FindElements(By.CssSelector(".product-img-box"));
+        private IReadOnlyCollection<IWebElement> findedProductList => Driver.FindElements(By.CssSelector(".product-img-box"));
         private IWebElement _productNameOnNewPage => Driver.FindElement(By.CssSelector(".product-name"));
         private IWebElement _productSalePriceOnNewPage => Driver.FindElement(By.CssSelector(".special"));
         private IWebElement _productRegularPriceOnNewPage => Driver.FindElement(By.CssSelector(".regular-price"));        

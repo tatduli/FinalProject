@@ -60,7 +60,6 @@
     <Compile Include="Enumeration\MeniuEnumeration.cs" />
     <Compile Include="Enumeration\SocialNetworks.cs" />
     <Compile Include="Enumeration\SortByEnum.cs" />
-    <Compile Include="List\SortByList.cs" />
     <Compile Include="Page\BasePage.cs" />
     <Compile Include="Page\BasketPage.cs" />
     <Compile Include="Page\OneProductPage.cs" />

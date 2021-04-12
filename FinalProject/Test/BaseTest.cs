@@ -4,11 +4,6 @@ using FinalProject.Tools;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinalProject.Test
 {
@@ -29,9 +24,7 @@ namespace FinalProject.Test
             oneProductPage = new OneProductPage(driver);
             womenClothingPage = new WomenClothingPage(driver);
             socialNetworksPage = new SocialNetworksPage(driver);
-            basketPage = new BasketPage(driver);
-            driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            basketPage = new BasketPage(driver);            
         }
 
         [TearDown]
@@ -44,7 +37,7 @@ namespace FinalProject.Test
         [OneTimeTearDown]
         public static void TearDown()
         {
-            //driver.Quit();
+            driver.Quit();
         }
     }
 }

@@ -3,9 +3,6 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FinalProject.Page
 {
@@ -44,8 +41,8 @@ namespace FinalProject.Page
         /// </summary>
         /// <returns>grąžina produkto vietą sąraše</returns>
         public int RandomProduct(List<IWebElement> productList)
-        {            
-            Random random = new Random(); 
+        {
+            Random random = new Random();
             int randomElementIndex = random.Next(productList.Count);
             return randomElementIndex;
         }
@@ -55,17 +52,17 @@ namespace FinalProject.Page
         /// </summary>
         /// <param name="randomElementIndex"></param>
         public void ClickOnRandomProduct(int randomElementIndex, List<IWebElement> productList)
-        {            
-            productList[randomElementIndex].Click(); //+1
+        {
+            productList[randomElementIndex].Click();
         }
 
         public int RandomProductSize(IWebElement _allProducstSize)
         {
             Random random = new Random();
             IReadOnlyCollection<IWebElement> productSizeCollection = _allProducstSize.FindElements(By.TagName("li"));
-            
+
             int randomSizeIndex = random.Next(productSizeCollection.Count);
-            
+
             return randomSizeIndex;
         }
 
@@ -78,16 +75,12 @@ namespace FinalProject.Page
             sizeList[randomElementIndex].Click();
         }
 
+        /// <summary>
+        /// Uždaromas pranešimo langas, kai puslapis paleidžiamas
+        /// </summary>
         public void MessageBoxShow()
         {
-            try
-            {
-                Driver.FindElement(By.CssSelector("#monetate_allinone_lightbox > table > tbody > tr > td > span > img")).Click();
-            }
-            catch (NoSuchElementException)
-            {
-                return;
-            }
+            Driver.FindElement(By.CssSelector("#monetate_allinone_lightbox > table > tbody > tr > td > span > img")).Click();
         }
 
         public void CloseBrowser()

@@ -1,14 +1,11 @@
 ﻿using FinalProject.Enumeration;
-using FinalProject.List;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace FinalProject.Test 
+namespace FinalProject.Test
 {
     public class WomenClothingTest : BaseTest
     {

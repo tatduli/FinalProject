@@ -1,16 +1,10 @@
 ﻿using FinalProject.Enumeration;
-using FinalProject.List;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace FinalProject.Page
 {
@@ -25,7 +19,7 @@ namespace FinalProject.Page
         private IWebElement _searchResulText => Driver.FindElement(By.XPath("//div[@id='grid-title']/h1"));
         private IWebElement _searchResulMeniuText1 => Driver.FindElement(By.XPath("//div[@class='landing-page title']/h1"));       
         private IWebElement _searchResulMeniuText3 => Driver.FindElement(By.XPath("//a[@class='blog-home']"));        
-        IReadOnlyCollection<IWebElement> allButton => Driver.FindElements(By.CssSelector(".nav-level-1"));
+        private IReadOnlyCollection<IWebElement> allButton => Driver.FindElements(By.CssSelector(".nav-level-1"));
         private IWebElement _submitEmailField => Driver.FindElement(By.Id("email_signup"));
         private IWebElement _submitEmailButton => Driver.FindElement(By.XPath("//div[@id='subscribe-info']/form/fieldset/input"));
         private IWebElement _lastElementOnPage => Driver.FindElement(By.CssSelector(".copyright"));       
@@ -67,7 +61,7 @@ namespace FinalProject.Page
         {
 
             Assert.True(expentedBrandResult.ToLower().Contains(
-                    _searchResulText.Text.ToLower()), "There is no such BRAND");
+                       _searchResulText.Text.ToLower()), "There is no such BRAND");
         }
 
         //=========================================================
@@ -79,8 +73,8 @@ namespace FinalProject.Page
             foreach (IWebElement button in allButton)
             {                
                 string span = button.FindElement(By.TagName("span")).Text;
-                Console.WriteLine(span);
-                if (span == meniuButtonName.ToString())
+                
+                if (span.Equals(meniuButtonName.ToString()))
                 {
                     button.Click();
                     break;
@@ -90,18 +84,17 @@ namespace FinalProject.Page
 
         public void CheckOrALLMeniuWork(Enum meniuBottonName)
         {
-            if (meniuBottonName.ToString() == MeniuEnumeration.Activities.ToString() ||
-                meniuBottonName.ToString() == MeniuEnumeration.Cycling.ToString())
+            if (meniuBottonName.ToString().Equals(MeniuEnumeration.Activities.ToString()) ||
+                meniuBottonName.ToString().Equals( MeniuEnumeration.Cycling.ToString()))
                 CheckOrMeniuWork(meniuBottonName, _searchResulText);
-            else if (meniuBottonName.ToString() == MeniuEnumeration.Blog.ToString())
+            else if (meniuBottonName.ToString().Equals(MeniuEnumeration.Blog.ToString()))
                 CheckOrMeniuWork(meniuBottonName, _searchResulMeniuText3);
             else 
                 CheckOrMeniuWork(meniuBottonName, _searchResulMeniuText1);          
         }
 
         public void CheckOrMeniuWork(Enum meniuBottonName, IWebElement element)
-        {
-            Console.WriteLine(element.Text);            
+        {                      
             Assert.True(element.Text.ToLower().Contains(
                         meniuBottonName.ToString().ToLower()), "The page isn't correct");           
         }
